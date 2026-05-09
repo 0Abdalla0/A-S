@@ -1,23 +1,36 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
+import { store } from "@/lib/store";
+import { burstGold } from "@/lib/confetti";
 
 type Choice = "yes" | "maybe" | "no" | null;
 
 export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
   const { t, lang } = useLang();
   const [choice, setChoice] = useState<Choice>(null);
+  const [name, setName] = useState("");
+  const [guests, setGuests] = useState(1);
   const [submitted, setSubmitted] = useState(false);
-  // Mock counts (pretend live)
-  const counts = { yes: 142 + (choice === "yes" ? 1 : 0), maybe: 18, no: 7 };
+
+  const live = store.rsvp.list();
+  const counts = {
+    yes: 142 + live.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0),
+    maybe: 18 + live.filter((r) => r.choice === "maybe").length,
+    no: 7 + live.filter((r) => r.choice === "no").length,
+  };
   const total = counts.yes + counts.maybe + counts.no;
 
   const handle = (c: Exclude<Choice, null>) => {
     setChoice(c);
-    setTimeout(() => {
-      setSubmitted(true);
-      onSubmit?.();
-    }, 400);
+  };
+
+  const submit = () => {
+    if (!choice) return;
+    store.rsvp.add({ name: name.trim() || (lang === "en" ? "Guest" : "ضيف"), choice, guests: Math.max(1, guests) });
+    setSubmitted(true);
+    burstGold();
+    onSubmit?.();
   };
 
   const options: { key: Exclude<Choice, null>; label: string; tone: string }[] = [
