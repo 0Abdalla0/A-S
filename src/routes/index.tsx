@@ -5,10 +5,14 @@ import { IntroEnvelope } from "@/components/IntroEnvelope";
 import { Hero } from "@/components/Hero";
 import { Countdown } from "@/components/Countdown";
 import { Story } from "@/components/Story";
+import { Rings3D } from "@/components/Rings3D";
 import { Gallery } from "@/components/Gallery";
 import { EventDetails } from "@/components/EventDetails";
 import { RSVP } from "@/components/RSVP";
 import { Messages } from "@/components/Messages";
+import { DrawingCanvas } from "@/components/DrawingCanvas";
+import { VoiceNote } from "@/components/VoiceNote";
+import { InvitationCard } from "@/components/InvitationCard";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { LangToggle, FloatingRSVP } from "@/components/Chrome";
 import { EVENT } from "@/lib/event";
@@ -50,10 +54,14 @@ function App() {
             <Hero />
             <Countdown />
             <Story />
+            <Rings3D />
             <Gallery />
             <EventDetails />
             <RSVP onSubmit={triggerHearts} />
             <Messages onSent={triggerHearts} />
+            <DrawingCanvas onSent={triggerHearts} />
+            <VoiceNote onSent={triggerHearts} />
+            <InvitationCard />
             <footer className="px-6 py-16 text-center">
               <div className="divider-gold mx-auto w-32" />
               <p className="mt-6 font-script text-3xl text-gradient-gold">

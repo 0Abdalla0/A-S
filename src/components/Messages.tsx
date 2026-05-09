@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
+import { store } from "@/lib/store";
+import { burstGold } from "@/lib/confetti";
 
 const colors = [
   "oklch(0.78 0.12 80)",   // gold
@@ -24,13 +26,16 @@ export function Messages({ onSent }: { onSent?: () => void }) {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [color, setColor] = useState(colors[0]);
-  const [list, setList] = useState<Msg[]>(seed);
+  const [list, setList] = useState<Msg[]>([...store.msg.list().map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })), ...seed]);
 
   const send = () => {
     if (!text.trim()) return;
-    const m: Msg = { name: name.trim() || (lang === "en" ? "Guest" : "ضيف"), text: text.trim(), color, ts: Date.now() };
+    const finalName = name.trim() || (lang === "en" ? "Guest" : "ضيف");
+    const m: Msg = { name: finalName, text: text.trim(), color, ts: Date.now() };
     setList([m, ...list]);
+    store.msg.add({ name: finalName, text: m.text, color });
     setName(""); setText("");
+    burstGold();
     onSent?.();
   };
 
