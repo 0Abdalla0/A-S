@@ -81,6 +81,16 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
                   </p>
                 </motion.button>
               ))}
+              <div className="sm:col-span-3 mt-2 grid gap-3 sm:grid-cols-[2fr_1fr_auto]">
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("yourName")}
+                  className="rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none placeholder:text-foreground/40 focus:border-gold/60" />
+                <input type="number" min={1} max={10} value={guests} onChange={(e) => setGuests(+e.target.value)}
+                  className="rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none focus:border-gold/60" />
+                <button onClick={submit} disabled={!choice}
+                  className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform disabled:opacity-40">
+                  {t("send")}
+                </button>
+              </div>
             </motion.div>
           ) : (
             <motion.div
