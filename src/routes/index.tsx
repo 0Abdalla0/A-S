@@ -54,10 +54,14 @@ function App() {
             <Hero />
             <Countdown />
             <Story />
+            <Rings3D />
             <Gallery />
             <EventDetails />
             <RSVP onSubmit={triggerHearts} />
             <Messages onSent={triggerHearts} />
+            <DrawingCanvas onSent={triggerHearts} />
+            <VoiceNote onSent={triggerHearts} />
+            <InvitationCard />
             <footer className="px-6 py-16 text-center">
               <div className="divider-gold mx-auto w-32" />
               <p className="mt-6 font-script text-3xl text-gradient-gold">
