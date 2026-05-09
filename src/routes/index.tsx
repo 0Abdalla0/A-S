@@ -1,26 +1,73 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { LangProvider } from "@/lib/i18n";
+import { IntroEnvelope } from "@/components/IntroEnvelope";
+import { Hero } from "@/components/Hero";
+import { Countdown } from "@/components/Countdown";
+import { Story } from "@/components/Story";
+import { Gallery } from "@/components/Gallery";
+import { EventDetails } from "@/components/EventDetails";
+import { RSVP } from "@/components/RSVP";
+import { Messages } from "@/components/Messages";
+import { FloatingHearts } from "@/components/FloatingHearts";
+import { LangToggle, FloatingRSVP } from "@/components/Chrome";
+import { EVENT } from "@/lib/event";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: `${EVENT.bride.en} & ${EVENT.groom.en} — Engagement Invitation` },
+      { name: "description", content: `Join us in celebrating the engagement of ${EVENT.bride.en} & ${EVENT.groom.en}.` },
+      { property: "og:title", content: `${EVENT.bride.en} & ${EVENT.groom.en}` },
+      { property: "og:description", content: `We're getting engaged. Save the date.` },
+      { property: "og:type", content: "website" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <LangProvider>
+      <App />
+    </LangProvider>
   );
 }
 
-function Index() {
-  return <PlaceholderIndex />;
+function App() {
+  const [opened, setOpened] = useState(false);
+  const [hearts, setHearts] = useState(0);
+
+  const triggerHearts = () => setHearts((h) => h + 1);
+
+  return (
+    <>
+      {!opened && <IntroEnvelope onOpen={() => setOpened(true)} />}
+      {opened && (
+        <>
+          <LangToggle />
+          <main className="relative">
+            <Hero />
+            <Countdown />
+            <Story />
+            <Gallery />
+            <EventDetails />
+            <RSVP onSubmit={triggerHearts} />
+            <Messages onSent={triggerHearts} />
+            <footer className="px-6 py-16 text-center">
+              <div className="divider-gold mx-auto w-32" />
+              <p className="mt-6 font-script text-3xl text-gradient-gold">
+                {EVENT.bride.en} & {EVENT.groom.en}
+              </p>
+              <p className="mt-2 text-[10px] uppercase tracking-[0.4em] text-foreground/40">
+                {EVENT.hashtag}
+              </p>
+            </footer>
+          </main>
+          <FloatingRSVP />
+          <FloatingHearts trigger={hearts} />
+        </>
+      )}
+    </>
+  );
 }
