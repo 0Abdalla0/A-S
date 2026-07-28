@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
-import g5 from "@/assets/gallery-5.jpg";
-import g6 from "@/assets/gallery-6.jpg";
-
+import g1 from "@/assets/L&M/1.jpeg";
+import g2 from "@/assets/L&M/2.jpeg";
+import g2 from "@/assets/L&M/3.jpeg";
+import g2 from "@/assets/L&M/4.jpeg";
+import g2 from "@/assets/L&M/5.jpeg";
+import g2 from "@/assets/L&M/6.jpeg";
+import g2 from "@/assets/L&M/7.jpeg";
 const photos = [
   { src: g1, span: "row-span-2" },
   { src: g2, span: "" },

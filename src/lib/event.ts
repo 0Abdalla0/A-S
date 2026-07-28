@@ -1,7 +1,7 @@
 // Edit these values to customize the invitation
 export const EVENT = {
-  groom: { en: "Abdelrhman", ar: "عبدالرحمن" },
-  bride: { en: "Salma", ar: "سلمى" },
+  groom: { en: "Loay", ar: "لؤى" },
+  bride: { en: "Menna", ar: "منه" },
   // Placeholder: 90 days from build time. Replace with exact ISO date.
   dateISO: "2026-08-08T19:00:00+02:00",
   venue: {
