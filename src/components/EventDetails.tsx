@@ -4,20 +4,9 @@ import { EVENT } from "@/lib/event";
 
 export function EventDetails() {
   const { t, lang } = useLang();
+  co
 
   const date = new Date(EVENT.dateISO);
-<<<<<<< HEAD
-  const dateStr = date.toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const timeStr = date.toLocaleTimeString(lang === "ar" ? "ar-EG" : "en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
-=======
 
   const dateStr = date.toLocaleDateString(
     lang === "ar" ? "ar-EG" : "en-US",
@@ -36,7 +25,6 @@ export function EventDetails() {
       minute: "2-digit",
     }
   );
->>>>>>> 6791483127bbdd939eba4773a552afcc9bd4d4e9
 
   const calendarUrl = (() => {
     const start = date
@@ -119,21 +107,10 @@ export function EventDetails() {
                 <p className="text-[10px] uppercase tracking-[0.35em] text-gold-soft/80">
                   {lang === "en" ? "Where" : "أين"}
                 </p>
-<<<<<<< HEAD
                 <p className="mt-2 font-display text-2xl italic text-ivory">
                   {EVENT.venue.name[lang]}
                 </p>
                 <p className="mt-1 text-sm text-foreground/60">{EVENT.venue.address[lang]}</p>
-=======
-
-                <p className="mt-2 font-display text-2xl italic text-ivory">
-                  {EVENT.venue.name[lang]}
-                </p>
-
-                <p className="mt-1 text-sm text-foreground/60">
-                  {EVENT.venue.address[lang]}
-                </p>
->>>>>>> 6791483127bbdd939eba4773a552afcc9bd4d4e9
               </div>
 
               <div className="flex flex-wrap gap-3 pt-2">
@@ -147,11 +124,7 @@ export function EventDetails() {
                 </a>
 
                 <a
-<<<<<<< HEAD
                   href={mapsUrl}
-=======
-                  href={directionsUrl}
->>>>>>> 6791483127bbdd939eba4773a552afcc9bd4d4e9
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold-deep to-gold px-5 py-2.5 text-xs uppercase tracking-[0.25em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-105"
