@@ -17,9 +17,9 @@ const colors = [
 type Msg = { name: string; text: string; color: string; ts: number };
 
 const seed: Msg[] = [
-  { name: "Yara", text: "Wishing you a lifetime of love and laughter.", color: colors[2], ts: Date.now() - 7200000 },
-  { name: "Omar", text: "Two beautiful souls, one beautiful future. ✨", color: colors[0], ts: Date.now() - 3600000 },
-  { name: "Lina", text: "So happy for you both — see you soon!", color: colors[3], ts: Date.now() - 1800000 },
+  // { name: "Yara", text: "Wishing you a lifetime of love and laughter.", color: colors[2], ts: Date.now() - 7200000 },
+  // { name: "Omar", text: "Two beautiful souls, one beautiful future. ✨", color: colors[0], ts: Date.now() - 3600000 },
+  // { name: "Lina", text: "So happy for you both — see you soon!", color: colors[3], ts: Date.now() - 1800000 },
 ];
 
 export function Messages({ onSent }: { onSent?: () => void }) {
