@@ -15,9 +15,9 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
 
   const live = store.rsvp.list();
   const counts = {
-    yes: 142 + live.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0),
-    maybe: 18 + live.filter((r) => r.choice === "maybe").length,
-    no: 7 + live.filter((r) => r.choice === "no").length,
+    yes:  0 + live.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0),
+    maybe: 0 + live.filter((r) => r.choice === "maybe").length,
+    no: 0 + live.filter((r) => r.choice === "no").length,
   };
   const total = counts.yes + counts.maybe + counts.no;
 
