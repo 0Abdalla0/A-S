@@ -58,8 +58,8 @@ function Scene() {
       <directionalLight position={[-5, 3, -5]} intensity={0.5} color="#d8a7b1" />
       <pointLight position={[0, -2, 3]} intensity={0.7} color="#f6d5dc" />
 
-      <Ring position={[-1.1, 0.2, 0]} color="#d8a7b1" scale={0.95} />
-      <Ring position={[1.1, -0.1, 0]} color="#e2c977" scale={0.85} rotationOffset={Math.PI / 3} />
+      <Ring position={[-1.1, 0.2, 0]} color="#f0c4cd" scale={0.95} />
+      <Ring position={[1.1, -0.1, 0]} color="#efd9a0" scale={0.85} rotationOffset={Math.PI / 3} />
 
       <Sparkles count={60} scale={[8, 4, 4]} size={3} speed={0.4} color="#c9a227" />
       <ContactShadows position={[0, -1.6, 0]} opacity={0.25} scale={8} blur={2.8} far={4} color="#d8a7b1" />
