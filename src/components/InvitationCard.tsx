@@ -35,7 +35,7 @@ export function InvitationCard() {
       const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, backgroundColor: "#ffffff" });
       const blob = await (await fetch(dataUrl)).blob();
       const file = new File([blob], "invitation.png", { type: "image/png" });
-      await navigator.share({ files: [file], title: `${EVENT.bride.en} & ${EVENT.groom.en}`, text: "You're invited to our engagement ✨" });
+      await navigator.share({ files: [file], title: `${EVENT.bride.en} & ${EVENT.groom.en}`, text: "You're invited to our wedding ✨" });
     } catch { /* cancelled */ }
     finally { setBusy(false); }
   };
@@ -73,7 +73,7 @@ export function InvitationCard() {
             <div className="relative flex h-full flex-col items-center justify-between p-10 text-center">
               <div>
                 <p className="text-[9px] uppercase tracking-[0.5em] text-gold-soft/80">
-                  {lang === "en" ? "Engagement" : "خطوبة"}
+                  {lang === "en" ? "wedding" : "خطوبة"}
                 </p>
                 <div className="divider-gold mx-auto mt-3 w-16" />
               </div>
