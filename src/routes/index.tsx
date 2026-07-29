@@ -21,7 +21,10 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: `${EVENT.bride.en} & ${EVENT.groom.en} — Wedding Invitation` },
-      { name: "description", content: `Join us in celebrating the wedding of ${EVENT.bride.en} & ${EVENT.groom.en}.` },
+      {
+        name: "description",
+        content: `Join us in celebrating the wedding of ${EVENT.bride.en} & ${EVENT.groom.en}.`,
+      },
       { property: "og:title", content: `${EVENT.bride.en} & ${EVENT.groom.en}` },
       { property: "og:description", content: `We're getting married. Save the date.` },
       { property: "og:type", content: "website" },

@@ -9,7 +9,10 @@ export function Hero() {
   const [musicOn, setMusicOn] = useState(false);
   const date = new Date(EVENT.dateISO);
   const dateStr = date.toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", {
-    weekday: "long", year: "numeric", month: "long", day: "numeric",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -24,12 +27,15 @@ export function Hero() {
           className="h-full w-full object-cover opacity-[0.18]"
           style={{ filter: "saturate(0.55) brightness(1.35) sepia(0.15)" }}
         />
-        <div className="absolute inset-0" style={{
-          background: "radial-gradient(ellipse at center, rgba(255,249,250,0.35) 0%, var(--onyx) 78%)",
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(255,249,250,0.35) 0%, var(--onyx) 78%)",
+          }}
+        />
         <div className="absolute inset-0" style={{ background: "var(--gradient-radial-glow)" }} />
       </div>
-
 
       {/* Particles */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -93,7 +99,9 @@ export function Hero() {
           transition={{ duration: 1.2, delay: 1.4 }}
           className="mt-12 flex flex-col items-center gap-2"
         >
-          <p className="text-[10px] uppercase tracking-[0.45em] text-foreground/60">{t("saveDate")}</p>
+          <p className="text-[10px] uppercase tracking-[0.45em] text-foreground/60">
+            {t("saveDate")}
+          </p>
           <p className="font-display text-xl italic text-ivory/90 sm:text-2xl">{dateStr}</p>
         </motion.div>
 
@@ -117,12 +125,31 @@ export function Hero() {
         aria-label={t("music")}
       >
         {musicOn ? (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" />
           </svg>
         ) : (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /><line x1="2" y1="2" x2="22" y2="22" />
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" />
+            <line x1="2" y1="2" x2="22" y2="22" />
           </svg>
         )}
       </button>

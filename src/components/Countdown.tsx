@@ -33,7 +33,9 @@ function Cell({ value, label }: { value: number; label: string }) {
         </div>
         <div className="absolute inset-x-0 top-1/2 h-px bg-gold/20" />
       </div>
-      <span className="mt-3 text-[10px] uppercase tracking-[0.35em] text-foreground/60">{label}</span>
+      <span className="mt-3 text-[10px] uppercase tracking-[0.35em] text-foreground/60">
+        {label}
+      </span>
     </div>
   );
 }

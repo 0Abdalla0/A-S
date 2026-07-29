@@ -39,7 +39,8 @@ export function Story() {
             className={`absolute top-0 bottom-0 ${lang === "ar" ? "right-4 sm:right-1/2" : "left-4 sm:left-1/2"}`}
             style={{
               width: "1px",
-              background: "linear-gradient(180deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent)",
+              background:
+                "linear-gradient(180deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent)",
             }}
           />
 
@@ -56,11 +57,15 @@ export function Story() {
                 }`}
               >
                 {/* dot */}
-                <div className={`absolute top-2 h-3 w-3 rounded-full bg-gold shadow-[0_0_20px_var(--gold)] ${lang === "ar" ? "right-[10px] sm:right-1/2 sm:-mr-[6px]" : "left-[10px] sm:left-1/2 sm:-ml-[6px]"}`} />
+                <div
+                  className={`absolute top-2 h-3 w-3 rounded-full bg-gold shadow-[0_0_20px_var(--gold)] ${lang === "ar" ? "right-[10px] sm:right-1/2 sm:-mr-[6px]" : "left-[10px] sm:left-1/2 sm:-ml-[6px]"}`}
+                />
 
                 <div className={`pl-10 sm:w-1/2 sm:px-10 ${lang === "ar" ? "sm:pr-10" : ""}`}>
                   <div className="rounded-2xl glass p-6 transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-gold)]">
-                    <p className="text-[10px] uppercase tracking-[0.35em] text-gold-soft/80">{it.date}</p>
+                    <p className="text-[10px] uppercase tracking-[0.35em] text-gold-soft/80">
+                      {it.date}
+                    </p>
                     <h3 className="mt-2 font-display text-2xl italic text-ivory">{it.title}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-foreground/70">{it.body}</p>
                   </div>

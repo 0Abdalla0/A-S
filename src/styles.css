@@ -97,7 +97,11 @@
 
   --gradient-gold: linear-gradient(135deg, #b06a7c, #d8a7b1 55%, #e2c977);
   --gradient-gold-text: linear-gradient(180deg, #c98f9c, #b06a7c 55%, #8e4c5f);
-  --gradient-radial-glow: radial-gradient(ellipse at center, rgba(246, 213, 220, 0.55), transparent 68%);
+  --gradient-radial-glow: radial-gradient(
+    ellipse at center,
+    rgba(246, 213, 220, 0.55),
+    transparent 68%
+  );
   --gradient-page: radial-gradient(ellipse at top, #fff9fa, #fbeef1 70%);
 
   --shadow-gold: 0 10px 35px rgba(216, 167, 177, 0.25);
@@ -189,7 +193,9 @@
 }
 
 @utility hover-lift {
-  transition: transform 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+  transition:
+    transform 0.4s var(--ease-luxury),
+    box-shadow 0.4s var(--ease-luxury);
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 18px 45px rgba(216, 167, 177, 0.28);

@@ -1,8 +1,20 @@
 // Mock local persistence (replace with Firebase later)
-export type RsvpEntry = { id: string; name: string; choice: "yes" | "maybe" | "no"; guests: number; ts: number };
+export type RsvpEntry = {
+  id: string;
+  name: string;
+  choice: "yes" | "maybe" | "no";
+  guests: number;
+  ts: number;
+};
 export type MsgEntry = { id: string; name: string; text: string; color: string; ts: number };
 export type DrawingEntry = { id: string; name: string; dataUrl: string; ts: number };
-export type VoiceEntry = { id: string; name: string; dataUrl: string; duration: number; ts: number };
+export type VoiceEntry = {
+  id: string;
+  name: string;
+  dataUrl: string;
+  duration: number;
+  ts: number;
+};
 
 const KEYS = {
   rsvp: "wedding.rsvp",
@@ -13,7 +25,11 @@ const KEYS = {
 
 function read<T>(k: string): T[] {
   if (typeof window === "undefined") return [];
-  try { return JSON.parse(localStorage.getItem(k) || "[]") as T[]; } catch { return []; }
+  try {
+    return JSON.parse(localStorage.getItem(k) || "[]") as T[];
+  } catch {
+    return [];
+  }
 }
 function write<T>(k: string, v: T[]) {
   if (typeof window === "undefined") return;

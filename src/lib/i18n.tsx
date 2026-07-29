@@ -63,7 +63,11 @@ export const dict: Dict = {
   music: { en: "Music", ar: "موسيقى" },
 };
 
-const LangCtx = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: (k: keyof typeof dict) => string }>({
+const LangCtx = createContext<{
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: (k: keyof typeof dict) => string;
+}>({
   lang: "en",
   setLang: () => {},
   t: (k) => dict[k]?.en ?? String(k),

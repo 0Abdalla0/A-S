@@ -55,7 +55,10 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     ctx.stroke();
     last.current = p;
   };
-  const end = () => { drawing.current = false; last.current = null; };
+  const end = () => {
+    drawing.current = false;
+    last.current = null;
+  };
 
   const clear = () => {
     const canvas = canvasRef.current!;
@@ -78,14 +81,18 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     <section id="draw" className="relative px-6 py-28">
       <div className="mx-auto max-w-3xl text-center">
         <motion.p
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1 }}
           className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
         >
           {lang === "en" ? "Sketch a wish" : "ارسم أمنية"}
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1 }}
           className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
         >
@@ -105,25 +112,41 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
             {palette.map((c) => (
-              <button key={c} onClick={() => setColor(c)}
+              <button
+                key={c}
+                onClick={() => setColor(c)}
                 className={`h-7 w-7 rounded-full border border-border transition-transform hover:scale-110 ${color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-background" : ""}`}
-                style={{ background: c }} aria-label="color" />
+                style={{ background: c }}
+                aria-label="color"
+              />
             ))}
-            <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(+e.target.value)}
-              className="ml-2 accent-[#b06a7c]" />
-
+            <input
+              type="range"
+              min={1}
+              max={12}
+              value={size}
+              onChange={(e) => setSize(+e.target.value)}
+              className="ml-2 accent-[#b06a7c]"
+            />
           </div>
 
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-            <input value={name} onChange={(e) => setName(e.target.value)}
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder={t("yourName")}
-              className="flex-1 rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none placeholder:text-foreground/40 focus:border-gold/60" />
-            <button onClick={clear}
-              className="rounded-full glass px-5 py-3 text-xs uppercase tracking-[0.3em] text-foreground/70 hover:text-gold">
+              className="flex-1 rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none placeholder:text-foreground/40 focus:border-gold/60"
+            />
+            <button
+              onClick={clear}
+              className="rounded-full glass px-5 py-3 text-xs uppercase tracking-[0.3em] text-foreground/70 hover:text-gold"
+            >
               {lang === "en" ? "Clear" : "مسح"}
             </button>
-            <button onClick={save}
-              className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform">
+            <button
+              onClick={save}
+              className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform"
+            >
               {lang === "en" ? "Save Sketch" : "احفظ الرسمة"}
             </button>
           </div>

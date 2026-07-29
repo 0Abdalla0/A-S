@@ -93,14 +93,17 @@ export function IntroEnvelope({ onOpen }: { onOpen: () => void }) {
                   borderRight: "calc(min(86vw,420px)/2) solid transparent",
                   borderTop: "calc(min(86vw,420px)/3) solid #f6d5dc",
                   filter: "drop-shadow(0 6px 18px rgba(216,167,177,0.35))",
-
                 }}
               />
             </motion.div>
             {/* wax seal */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-gold)" }}>
-              <div className="flex h-full items-center justify-center font-display text-onyx text-lg italic">L&M</div>
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{ background: "var(--gradient-gold)", boxShadow: "var(--shadow-gold)" }}
+            >
+              <div className="flex h-full items-center justify-center font-display text-onyx text-lg italic">
+                L&M
+              </div>
             </div>
           </motion.button>
 

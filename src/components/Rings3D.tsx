@@ -5,7 +5,17 @@ import { motion } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 import * as THREE from "three";
 
-function Ring({ position, color, scale = 1, rotationOffset = 0 }: { position: [number, number, number]; color: string; scale?: number; rotationOffset?: number }) {
+function Ring({
+  position,
+  color,
+  scale = 1,
+  rotationOffset = 0,
+}: {
+  position: [number, number, number];
+  color: string;
+  scale?: number;
+  rotationOffset?: number;
+}) {
   const ref = useRef<THREE.Mesh>(null!);
   useFrame((state) => {
     const t = state.clock.elapsedTime;
@@ -62,9 +72,15 @@ function Scene() {
       <Ring position={[1.1, -0.1, 0]} color="#efd9a0" scale={0.85} rotationOffset={Math.PI / 3} />
 
       <Sparkles count={60} scale={[8, 4, 4]} size={3} speed={0.4} color="#c9a227" />
-      <ContactShadows position={[0, -1.6, 0]} opacity={0.25} scale={8} blur={2.8} far={4} color="#d8a7b1" />
+      <ContactShadows
+        position={[0, -1.6, 0]}
+        opacity={0.25}
+        scale={8}
+        blur={2.8}
+        far={4}
+        color="#d8a7b1"
+      />
       <Environment preset="studio" />
-
     </>
   );
 }
@@ -75,14 +91,18 @@ export function Rings3D() {
     <section className="relative px-6 py-28">
       <div className="mx-auto max-w-5xl text-center">
         <motion.p
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1 }}
           className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
         >
           {lang === "en" ? "Sealed in gold" : "مختوم بالذهب"}
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.1 }}
           className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-6xl"
         >
@@ -90,8 +110,13 @@ export function Rings3D() {
         </motion.h2>
 
         <div className="mt-12 relative h-[460px] w-full overflow-hidden rounded-3xl glass-gold sm:h-[560px]">
-          <div className="absolute inset-0 pointer-events-none z-10"
-            style={{ background: "radial-gradient(ellipse at center, transparent 45%, rgba(246,213,220,0.55) 100%)" }} />
+          <div
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, transparent 45%, rgba(246,213,220,0.55) 100%)",
+            }}
+          />
           <Canvas shadows dpr={[1, 1.8]} camera={{ position: [0, 0.2, 4.2], fov: 45 }}>
             <Suspense fallback={null}>
               <Scene />

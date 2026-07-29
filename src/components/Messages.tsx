@@ -5,13 +5,12 @@ import { store } from "@/lib/store";
 import { burstGold } from "@/lib/confetti";
 
 const colors = [
-  "#b06a7c",   // rose gold
-  "#8e4c5f",   // deep rose
-  "#c9a227",   // accent gold
-  "#8a6fa8",   // mauve
-  "#5f8b93",   // dusty teal
-  "#4b3a3f",   // ink
-
+  "#b06a7c", // rose gold
+  "#8e4c5f", // deep rose
+  "#c9a227", // accent gold
+  "#8a6fa8", // mauve
+  "#5f8b93", // dusty teal
+  "#4b3a3f", // ink
 ];
 
 type Msg = { name: string; text: string; color: string; ts: number };
@@ -27,7 +26,10 @@ export function Messages({ onSent }: { onSent?: () => void }) {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [color, setColor] = useState(colors[0]);
-  const [list, setList] = useState<Msg[]>([...store.msg.list().map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })), ...seed]);
+  const [list, setList] = useState<Msg[]>([
+    ...store.msg.list().map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })),
+    ...seed,
+  ]);
 
   const send = () => {
     if (!text.trim()) return;
@@ -35,7 +37,8 @@ export function Messages({ onSent }: { onSent?: () => void }) {
     const m: Msg = { name: finalName, text: text.trim(), color, ts: Date.now() };
     setList([m, ...list]);
     store.msg.add({ name: finalName, text: m.text, color });
-    setName(""); setText("");
+    setName("");
+    setText("");
     burstGold();
     onSent?.();
   };
@@ -45,14 +48,18 @@ export function Messages({ onSent }: { onSent?: () => void }) {
       <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1 }}
             className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
           >
             {t("messages")}
           </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.1 }}
             className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
           >
@@ -63,7 +70,9 @@ export function Messages({ onSent }: { onSent?: () => void }) {
         <div className="mt-14 grid gap-8 md:grid-cols-[1fr_1.1fr]">
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1 }}
             className="glass rounded-2xl p-6 sm:p-8"
           >
@@ -79,7 +88,12 @@ export function Messages({ onSent }: { onSent?: () => void }) {
               placeholder={t("yourMessage")}
               rows={5}
               className="mt-3 w-full resize-none rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none transition-all placeholder:text-foreground/40 focus:border-gold/60 focus:shadow-[var(--shadow-gold)]"
-              style={{ fontFamily: "var(--font-display)", fontSize: "1.05rem", fontStyle: "italic", color }}
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.05rem",
+                fontStyle: "italic",
+                color,
+              }}
             />
 
             <div className="mt-4 flex items-center gap-3">
@@ -109,7 +123,9 @@ export function Messages({ onSent }: { onSent?: () => void }) {
               <p className="mt-2 font-display italic" style={{ color, fontSize: "1.1rem" }}>
                 {text || (lang === "en" ? "Your message will glow here..." : "ستظهر رسالتك هنا...")}
               </p>
-              <p className="mt-2 text-xs text-foreground/50">— {name || (lang === "en" ? "You" : "أنت")}</p>
+              <p className="mt-2 text-xs text-foreground/50">
+                — {name || (lang === "en" ? "You" : "أنت")}
+              </p>
             </div>
 
             <button
@@ -134,13 +150,26 @@ export function Messages({ onSent }: { onSent?: () => void }) {
                   className="glass rounded-2xl p-5"
                   style={{ animation: `float-soft ${6 + i}s ease-in-out infinite` }}
                 >
-                  <p className="font-display italic leading-relaxed" style={{ color: m.color, fontSize: "1.15rem" }}>
+                  <p
+                    className="font-display italic leading-relaxed"
+                    style={{ color: m.color, fontSize: "1.15rem" }}
+                  >
                     "{m.text}"
                   </p>
                   <div className="mt-3 flex items-center justify-between">
                     <p className="text-xs tracking-wider text-foreground/60">— {m.name}</p>
-                    <button className="text-foreground/40 transition-colors hover:text-gold" aria-label="heart">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <button
+                      className="text-foreground/40 transition-colors hover:text-gold"
+                      aria-label="heart"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                       </svg>
                     </button>

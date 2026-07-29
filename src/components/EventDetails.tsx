@@ -6,10 +6,14 @@ export function EventDetails() {
   const { t, lang } = useLang();
   const date = new Date(EVENT.dateISO);
   const dateStr = date.toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", {
-    weekday: "long", year: "numeric", month: "long", day: "numeric",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
   const timeStr = date.toLocaleTimeString(lang === "ar" ? "ar-EG" : "en-US", {
-    hour: "numeric", minute: "2-digit",
+    hour: "numeric",
+    minute: "2-digit",
   });
 
   const calendarUrl = (() => {
@@ -28,14 +32,18 @@ export function EventDetails() {
       <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1 }}
             className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
           >
             {t("details")}
           </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.1 }}
             className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
           >
@@ -44,7 +52,9 @@ export function EventDetails() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
           className="mt-14 grid gap-6 md:grid-cols-2"
         >
@@ -63,21 +73,25 @@ export function EventDetails() {
                 <p className="text-[10px] uppercase tracking-[0.35em] text-gold-soft/80">
                   {lang === "en" ? "Where" : "أين"}
                 </p>
-                <p className="mt-2 font-display text-2xl italic text-ivory">{EVENT.venue.name[lang]}</p>
+                <p className="mt-2 font-display text-2xl italic text-ivory">
+                  {EVENT.venue.name[lang]}
+                </p>
                 <p className="mt-1 text-sm text-foreground/60">{EVENT.venue.address[lang]}</p>
               </div>
 
               <div className="flex flex-wrap gap-3 pt-2">
                 <a
                   href={calendarUrl}
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                   className="gold-border inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs uppercase tracking-[0.25em] text-gold transition-all hover:bg-gold/10"
                 >
                   {t("addCalendar")}
                 </a>
                 <a
                   href={mapsUrl}
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gold-deep to-gold px-5 py-2.5 text-xs uppercase tracking-[0.25em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-105"
                 >
                   {t("directions")}
