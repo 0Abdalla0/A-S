@@ -79,11 +79,11 @@ export function InvitationCard() {
               </div>
 
               <div>
-                <p className="font-script text-5xl text-gradient-gold leading-none">
+                <p className="font-script text-5xl text-gold-deep leading-none">
                   {EVENT.bride[lang]}
                 </p>
                 <p className="my-3 font-display italic text-2xl text-gold">&</p>
-                <p className="font-script text-5xl text-gradient-gold leading-none">
+                <p className="font-script text-5xl text-gold-deep leading-none">
                   {EVENT.groom[lang]}
                 </p>
               </div>
