@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { EVENT } from "@/lib/event";
 import heroBg from "@/assets/hero-bg.jpg";
 
 export function Hero() {
   const { lang, t } = useLang();
+
   const [musicOn, setMusicOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   const date = new Date(EVENT.dateISO);
+
   const dateStr = date.toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", {
     weekday: "long",
     year: "numeric",
@@ -15,8 +19,34 @@ export function Hero() {
     day: "numeric",
   });
 
+  const toggleMusic = async () => {
+    if (!audioRef.current) return;
+
+    if (musicOn) {
+      audioRef.current.pause();
+      setMusicOn(false);
+    } else {
+      try {
+        audioRef.current.volume = 0.5;
+        await audioRef.current.play();
+        setMusicOn(true);
+      } catch (err) {
+        console.error("Unable to play audio:", err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      audioRef.current?.pause();
+    };
+  }, []);
+
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+      {/* Hidden Audio */}
+      <audio ref={audioRef} src="/music/our-song.mp3" loop preload="auto" />
+
       {/* BG image with parallax-like fade */}
       <div className="absolute inset-0">
         <img
@@ -25,8 +55,11 @@ export function Hero() {
           width={1920}
           height={1080}
           className="h-full w-full object-cover opacity-[0.18]"
-          style={{ filter: "saturate(0.55) brightness(1.35) sepia(0.15)" }}
+          style={{
+            filter: "saturate(0.55) brightness(1.35) sepia(0.15)",
+          }}
         />
+
         <div
           className="absolute inset-0"
           style={{
@@ -34,7 +67,13 @@ export function Hero() {
               "radial-gradient(ellipse at center, rgba(255,249,250,0.35) 0%, var(--onyx) 78%)",
           }}
         />
-        <div className="absolute inset-0" style={{ background: "var(--gradient-radial-glow)" }} />
+
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "var(--gradient-radial-glow)",
+          }}
+        />
       </div>
 
       {/* Particles */}
@@ -47,7 +86,9 @@ export function Hero() {
               left: `${Math.random() * 100}%`,
               width: `${Math.random() * 3 + 1}px`,
               height: `${Math.random() * 3 + 1}px`,
-              animation: `float-up ${12 + Math.random() * 12}s ${Math.random() * 10}s linear infinite`,
+              animation: `float-up ${
+                12 + Math.random() * 12
+              }s ${Math.random() * 10}s linear infinite`,
               opacity: 0.5,
             }}
           />
@@ -67,7 +108,11 @@ export function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: 1.6,
+            delay: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+          }}
           className="font-display text-[clamp(3rem,12vw,7.5rem)] leading-[0.95] text-gradient-gold"
         >
           {EVENT.bride[lang]}
@@ -87,7 +132,11 @@ export function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            duration: 1.6,
+            delay: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+          }}
           className="font-display text-[clamp(3rem,12vw,7.5rem)] leading-[0.95] text-gradient-gold"
         >
           {EVENT.groom[lang]}
@@ -102,6 +151,7 @@ export function Hero() {
           <p className="text-[10px] uppercase tracking-[0.45em] text-foreground/60">
             {t("saveDate")}
           </p>
+
           <p className="font-display text-xl italic text-ivory/90 sm:text-2xl">{dateStr}</p>
         </motion.div>
 
@@ -118,9 +168,9 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Music toggle */}
+      {/* Music Toggle */}
       <button
-        onClick={() => setMusicOn((v) => !v)}
+        onClick={toggleMusic}
         className="absolute bottom-6 right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full glass text-gold transition-transform hover:scale-110 sm:bottom-8 sm:right-8"
         aria-label={t("music")}
       >
