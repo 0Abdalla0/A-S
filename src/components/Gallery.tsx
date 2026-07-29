@@ -9,12 +9,12 @@ import g5 from "@/assets/L&M/5.jpeg";
 import g6 from "@/assets/L&M/6.jpeg";
 
 const photos = [
-  { src: g1, span: "row-span-2" },
-  { src: g2, span: "" },
-  { src: g3, span: "row-span-2" },
-  { src: g4, span: "" },
-  { src: g5, span: "row-span-2" },
-  { src: g6, span: "" },
+  { src: g1, span: "row-span-3" },
+  { src: g2, span: "row-span-2" },
+  { src: g3, span: "row-span-3" },
+  { src: g4, span: "row-span-2" },
+  { src: g5, span: "row-span-3" },
+  { src: g6, span: "row-span-2" },
 ];
 
 export function Gallery() {

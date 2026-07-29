@@ -1,16 +1,16 @@
 // Edit these values to customize the invitation
 export const EVENT = {
-  groom: { en: "Loay", ar: "لؤى" },
-  bride: { en: "Menna", ar: "منه" },
+  groom: { en: "Loay Shahin", ar: "لؤى شاهين" },
+  bride: { en: "Menna Abdelrassoul", ar: " منه عبدالرسول" },
   // Placeholder: 90 days from build time. Replace with exact ISO date.
-  dateISO: "2026-08-08T19:00:00+02:00",
+  dateISO: "2026-08-12T19:00:00+19:30",
   venue: {
-    name: { en: "The Grand Ballroom", ar: "القاعة الكبرى" },
+    name: { en: "Tuana hall", ar: "القاعة الكبرى" },
     address: {
-      en: "Nile Ritz-Carlton, 1113 Corniche El Nil, Cairo",
-      ar: "ريتز كارلتون النيل، ١١١٣ كورنيش النيل، القاهرة",
+      en: " Salah Salem St, Al Estad, Qesm Than Madinet Nasr, Cairo Governorate",
+      ar: "شارع صلاح سالم، الاستاد، قاسم ثم مدينة النصر، محافظة القاهرة ",
     },
-    mapsQuery: "Nile Ritz-Carlton Cairo",
+    mapsQuery: "Salah Salem St Cairo",
   },
-  hashtag: "#AbdelrhmanAndSalma",
+  hashtag: "#LoayandMenna",
 };

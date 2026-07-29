@@ -5,10 +5,10 @@ export type DrawingEntry = { id: string; name: string; dataUrl: string; ts: numb
 export type VoiceEntry = { id: string; name: string; dataUrl: string; duration: number; ts: number };
 
 const KEYS = {
-  rsvp: "engagement.rsvp",
-  msg: "engagement.messages",
-  draw: "engagement.drawings",
-  voice: "engagement.voice",
+  rsvp: "marriage.rsvp",
+  msg: "marriage.messages",
+  draw: "marriage.drawings",
+  voice: "marriage.voice",
 } as const;
 
 function read<T>(k: string): T[] {
@@ -18,7 +18,7 @@ function read<T>(k: string): T[] {
 function write<T>(k: string, v: T[]) {
   if (typeof window === "undefined") return;
   localStorage.setItem(k, JSON.stringify(v));
-  window.dispatchEvent(new CustomEvent("engagement-store-update", { detail: k }));
+  window.dispatchEvent(new CustomEvent("marriage-store-update", { detail: k }));
 }
 
 export const store = {
@@ -56,7 +56,7 @@ export const store = {
   },
   clearAll: () => {
     Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
-    window.dispatchEvent(new CustomEvent("engagement-store-update"));
+    window.dispatchEvent(new CustomEvent("marriage-store-update"));
   },
 };
 

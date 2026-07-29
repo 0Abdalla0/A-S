@@ -15,13 +15,13 @@ export function EventDetails() {
   const calendarUrl = (() => {
     const start = date.toISOString().replace(/[-:]|\.\d{3}/g, "");
     const end = new Date(date.getTime() + 4 * 3600000).toISOString().replace(/[-:]|\.\d{3}/g, "");
-    const text = encodeURIComponent(`${EVENT.bride.en} & ${EVENT.groom.en} — Engagement`);
+    const text = encodeURIComponent(`${EVENT.bride.en} & ${EVENT.groom.en} — Marriage`);
     const loc = encodeURIComponent(EVENT.venue.address.en);
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&location=${loc}`;
   })();
 
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(EVENT.venue.mapsQuery)}`;
-  const mapsEmbed = `https://www.google.com/maps?q=${encodeURIComponent(EVENT.venue.mapsQuery)}&output=embed`;
+  const mapsUrl = `https://maps.app.goo.gl/pke2eC9TGxRPv9fn7`;
+  const mapsEmbed = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8751265589262!2d31.308391599999997!3d30.0746519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583e4ac7f989d1%3A0x99bb199a31583c34!2sArmor%20Officers%20House!5e1!3m2!1sen!2seg!4v1785320768647!5m2!1sen!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 
   return (
     <section className="relative px-6 py-28">
