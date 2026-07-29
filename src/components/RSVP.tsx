@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
-import { store } from "@/lib/store";
+import { useInvitationData } from "@/lib/invitation-data";
 import { burstGold } from "@/lib/confetti";
 
 type Choice = "yes" | "maybe" | "no" | null;
 
 export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
   const { t, lang } = useLang();
+  const { ready, rsvps, submitRsvp } = useInvitationData();
   const [choice, setChoice] = useState<Choice>(null);
   const [name, setName] = useState("");
   const [guests, setGuests] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const live = store.rsvp.list();
   const counts = {
-    yes:  0 + live.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0),
-    maybe: 0 + live.filter((r) => r.choice === "maybe").length,
-    no: 0 + live.filter((r) => r.choice === "no").length,
+    yes: 0 + rsvps.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0),
+    maybe: 0 + rsvps.filter((r) => r.choice === "maybe").length,
+    no: 0 + rsvps.filter((r) => r.choice === "no").length,
   };
   const total = counts.yes + counts.maybe + counts.no;
 
@@ -25,16 +27,31 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
     setChoice(c);
   };
 
-  const submit = () => {
+  const submit = async () => {
     if (!choice) return;
-    store.rsvp.add({
-      name: name.trim() || (lang === "en" ? "Guest" : "ضيف"),
-      choice,
-      guests: Math.max(1, guests),
-    });
-    setSubmitted(true);
-    burstGold();
-    onSubmit?.();
+
+    try {
+      setSaving(true);
+      setError(null);
+      await submitRsvp({
+        name: name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ"),
+        choice,
+        guests: Math.max(1, guests),
+        language: lang,
+      });
+      setSubmitted(true);
+      burstGold();
+      onSubmit?.();
+    } catch (err) {
+      console.error(err);
+      setError(
+        lang === "en"
+          ? "Unable to send RSVP right now."
+          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¶ÙˆØ± Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const options: { key: Exclude<Choice, null>; label: string; tone: string }[] = [
@@ -89,11 +106,11 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
                   />
                   <p className="relative font-display text-xl italic text-ivory">{o.label}</p>
                   <p className="relative mt-1 text-[10px] uppercase tracking-[0.3em] text-foreground/50">
-                    {lang === "en" ? "Tap to select" : "اضغط للاختيار"}
+                    {lang === "en" ? "Tap to select" : "Ø§Ø¶ØºØ· Ù„Ù„Ø§Ø®ØªÙŠØ§Ø±"}
                   </p>
                 </motion.button>
               ))}
-              <div className="sm:col-span-3 mt-2 grid gap-3 sm:grid-cols-[2fr_1fr_auto]">
+              <div className="mt-2 grid gap-3 sm:col-span-3 sm:grid-cols-[2fr_1fr_auto]">
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -109,13 +126,20 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
                   className="rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-ivory outline-none focus:border-gold/60"
                 />
                 <button
-                  onClick={submit}
-                  disabled={!choice}
-                  className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform disabled:opacity-40"
+                  onClick={() => {
+                    void submit();
+                  }}
+                  disabled={!choice || !ready || saving}
+                  className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-40"
                 >
-                  {t("send")}
+                  {saving
+                    ? lang === "en"
+                      ? "Sending..."
+                      : "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„..."
+                    : t("send")}
                 </button>
               </div>
+              {error && <p className="text-sm text-destructive sm:col-span-3">{error}</p>}
             </motion.div>
           ) : (
             <motion.div
@@ -129,7 +153,6 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
           )}
         </AnimatePresence>
 
-        {/* Live stats */}
         <div className="mt-14 grid gap-4 sm:grid-cols-3">
           {[
             { label: t("attending"), val: counts.yes },

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { LangProvider } from "@/lib/i18n";
+import { InvitationDataProvider } from "@/lib/invitation-data";
 import { IntroEnvelope } from "@/components/IntroEnvelope";
 import { Hero } from "@/components/Hero";
 import { Countdown } from "@/components/Countdown";
@@ -20,7 +21,7 @@ import { EVENT } from "@/lib/event";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${EVENT.bride.en} & ${EVENT.groom.en} — Wedding Invitation` },
+      { title: `${EVENT.bride.en} & ${EVENT.groom.en} â€” Wedding Invitation` },
       {
         name: "description",
         content: `Join us in celebrating the wedding of ${EVENT.bride.en} & ${EVENT.groom.en}.`,
@@ -36,7 +37,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <LangProvider>
-      <App />
+      <InvitationDataProvider>
+        <App />
+      </InvitationDataProvider>
     </LangProvider>
   );
 }

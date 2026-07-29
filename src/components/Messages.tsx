@@ -1,46 +1,56 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
-import { store } from "@/lib/store";
+import { useInvitationData } from "@/lib/invitation-data";
 import { burstGold } from "@/lib/confetti";
 
-const colors = [
-  "#b06a7c", // rose gold
-  "#8e4c5f", // deep rose
-  "#c9a227", // accent gold
-  "#8a6fa8", // mauve
-  "#5f8b93", // dusty teal
-  "#4b3a3f", // ink
-];
+const colors = ["#b06a7c", "#8e4c5f", "#c9a227", "#8a6fa8", "#5f8b93", "#4b3a3f"];
 
 type Msg = { name: string; text: string; color: string; ts: number };
 
-const seed: Msg[] = [
-  // { name: "Yara", text: "Wishing you a lifetime of love and laughter.", color: colors[2], ts: Date.now() - 7200000 },
-  // { name: "Omar", text: "Two beautiful souls, one beautiful future. ✨", color: colors[0], ts: Date.now() - 3600000 },
-  // { name: "Lina", text: "So happy for you both — see you soon!", color: colors[3], ts: Date.now() - 1800000 },
-];
+const seed: Msg[] = [];
 
 export function Messages({ onSent }: { onSent?: () => void }) {
   const { t, lang } = useLang();
+  const { msgs, ready, submitMessage } = useInvitationData();
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [color, setColor] = useState(colors[0]);
-  const [list, setList] = useState<Msg[]>([
-    ...store.msg.list().map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })),
-    ...seed,
-  ]);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const send = () => {
+  const list: Msg[] = [
+    ...msgs.map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })),
+    ...seed,
+  ];
+
+  const send = async () => {
     if (!text.trim()) return;
-    const finalName = name.trim() || (lang === "en" ? "Guest" : "ضيف");
-    const m: Msg = { name: finalName, text: text.trim(), color, ts: Date.now() };
-    setList([m, ...list]);
-    store.msg.add({ name: finalName, text: m.text, color });
-    setName("");
-    setText("");
-    burstGold();
-    onSent?.();
+    const finalName = name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ");
+
+    try {
+      setSending(true);
+      setError(null);
+      await submitMessage({
+        name: finalName,
+        text: text.trim(),
+        color,
+        language: lang,
+      });
+      setName("");
+      setText("");
+      burstGold();
+      onSent?.();
+    } catch (err) {
+      console.error(err);
+      setError(
+        lang === "en"
+          ? "Unable to send your message right now."
+          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø±Ø³Ø§Ù„ØªÙƒ Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -68,7 +78,6 @@ export function Messages({ onSent }: { onSent?: () => void }) {
         </div>
 
         <div className="mt-14 grid gap-8 md:grid-cols-[1fr_1.1fr]">
-          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -98,7 +107,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
 
             <div className="mt-4 flex items-center gap-3">
               <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/60">
-                {lang === "en" ? "Color" : "اللون"}
+                {lang === "en" ? "Color" : "Ø§Ù„Ù„ÙˆÙ†"}
               </span>
               <div className="flex gap-2">
                 {colors.map((c) => (
@@ -115,29 +124,33 @@ export function Messages({ onSent }: { onSent?: () => void }) {
               </div>
             </div>
 
-            {/* Live preview */}
             <div className="mt-5 rounded-xl border border-border/30 bg-onyx/30 p-5">
               <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40">
-                {lang === "en" ? "Preview" : "معاينة"}
+                {lang === "en" ? "Preview" : "Ù…Ø¹Ø§ÙŠÙ†Ø©"}
               </p>
               <p className="mt-2 font-display italic" style={{ color, fontSize: "1.1rem" }}>
-                {text || (lang === "en" ? "Your message will glow here..." : "ستظهر رسالتك هنا...")}
+                {text ||
+                  (lang === "en"
+                    ? "Your message will glow here..."
+                    : "Ø³ØªØ¸Ù‡Ø± Ø±Ø³Ø§Ù„ØªÙƒ Ù‡Ù†Ø§...")}
               </p>
               <p className="mt-2 text-xs text-foreground/50">
-                — {name || (lang === "en" ? "You" : "أنت")}
+                â€” {name || (lang === "en" ? "You" : "Ø£Ù†Øª")}
               </p>
             </div>
 
             <button
-              onClick={send}
-              disabled={!text.trim()}
-              className="mt-5 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-all hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed"
+              onClick={() => {
+                void send();
+              }}
+              disabled={!text.trim() || !ready || sending}
+              className="mt-5 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {t("send")}
+              {sending ? (lang === "en" ? "Sending..." : "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...") : t("send")}
             </button>
+            {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </motion.div>
 
-          {/* Wall */}
           <div className="space-y-4">
             <AnimatePresence initial={false}>
               {list.map((m, i) => (
@@ -157,7 +170,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
                     "{m.text}"
                   </p>
                   <div className="mt-3 flex items-center justify-between">
-                    <p className="text-xs tracking-wider text-foreground/60">— {m.name}</p>
+                    <p className="text-xs tracking-wider text-foreground/60">â€” {m.name}</p>
                     <button
                       className="text-foreground/40 transition-colors hover:text-gold"
                       aria-label="heart"

@@ -7,36 +7,26 @@ export function EventDetails() {
 
   const date = new Date(EVENT.dateISO);
 
-  const dateStr = date.toLocaleDateString(
-    lang === "ar" ? "ar-EG" : "en-US",
-    {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
+  const dateStr = date.toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-  const timeStr = date.toLocaleTimeString(
-    lang === "ar" ? "ar-EG" : "en-US",
-    {
-      hour: "numeric",
-      minute: "2-digit",
-    }
-  );
+  const timeStr = date.toLocaleTimeString(lang === "ar" ? "ar-EG" : "en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 
   const calendarUrl = (() => {
-    const start = date
-      .toISOString()
-      .replace(/[-:]|\.\d{3}/g, "");
+    const start = date.toISOString().replace(/[-:]|\.\d{3}/g, "");
 
     const end = new Date(date.getTime() + 4 * 60 * 60 * 1000)
       .toISOString()
       .replace(/[-:]|\.\d{3}/g, "");
 
-    const text = encodeURIComponent(
-      `${EVENT.bride.en} & ${EVENT.groom.en} — Wedding`
-    );
+    const text = encodeURIComponent(`${EVENT.bride.en} & ${EVENT.groom.en} — Wedding`);
 
     const loc = encodeURIComponent(EVENT.venue.address.en);
 
@@ -48,8 +38,7 @@ export function EventDetails() {
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8751265589262!2d31.308391599999997!3d30.0746519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583e4ac7f989d1%3A0x99bb199a31583c34!2sArmor%20Officers%20House!5e1!3m2!1sen!2seg!4v1785320768647!5m2!1sen!2seg";
 
   // Opens Google Maps in a new tab
-  const directionsUrl =
-    "https://maps.google.com/?q=Armor+Officers+House+Cairo";
+  const directionsUrl = "https://maps.google.com/?q=Armor+Officers+House+Cairo";
 
   return (
     <section className="relative px-6 py-28">
@@ -91,13 +80,9 @@ export function EventDetails() {
                   {lang === "en" ? "When" : "متى"}
                 </p>
 
-                <p className="mt-2 font-display text-2xl italic text-ivory">
-                  {dateStr}
-                </p>
+                <p className="mt-2 font-display text-2xl italic text-ivory">{dateStr}</p>
 
-                <p className="mt-1 text-sm text-foreground/60">
-                  {timeStr}
-                </p>
+                <p className="mt-1 text-sm text-foreground/60">{timeStr}</p>
               </div>
 
               <div className="divider-gold" />
@@ -111,9 +96,7 @@ export function EventDetails() {
                   {EVENT.venue.name[lang]}
                 </p>
 
-                <p className="mt-1 text-sm text-foreground/60">
-                  {EVENT.venue.address[lang]}
-                </p>
+                <p className="mt-1 text-sm text-foreground/60">{EVENT.venue.address[lang]}</p>
               </div>
 
               <div className="flex flex-wrap gap-3 pt-2">
@@ -146,8 +129,7 @@ export function EventDetails() {
               className="w-full h-[450px]"
               style={{
                 border: 0,
-                filter:
-                  "grayscale(0.4) contrast(0.95) brightness(0.85)",
+                filter: "grayscale(0.4) contrast(0.95) brightness(0.85)",
               }}
               loading="lazy"
               allowFullScreen

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLang } from "@/lib/i18n";
-import { store } from "@/lib/store";
+import { useInvitationData } from "@/lib/invitation-data";
 import { burstGold } from "@/lib/confetti";
 
 export function VoiceNote({ onSent }: { onSent?: () => void }) {
   const { t, lang } = useLang();
+  const { ready, submitVoice } = useInvitationData();
   const [name, setName] = useState("");
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -46,7 +47,11 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
       setElapsed(0);
       timerRef.current = window.setInterval(() => setElapsed((e) => e + 1), 1000);
     } catch {
-      setError(lang === "en" ? "Microphone access denied." : "تم رفض الوصول للميكروفون.");
+      setError(
+        lang === "en"
+          ? "Microphone access denied."
+          : "ØªÙ… Ø±ÙØ¶ Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ†.",
+      );
     }
   };
 
@@ -56,19 +61,31 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
     if (timerRef.current) window.clearInterval(timerRef.current);
   };
 
-  const save = () => {
+  const save = async () => {
     if (!preview) return;
-    store.voice.add({
-      name: name.trim() || (lang === "en" ? "Guest" : "ضيف"),
-      dataUrl: preview,
-      duration,
-    });
-    burstGold();
-    onSent?.();
-    setPreview(null);
-    setName("");
-    setElapsed(0);
-    setDuration(0);
+
+    try {
+      setError(null);
+      await submitVoice({
+        name: name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ"),
+        dataUrl: preview,
+        duration,
+        language: lang,
+      });
+      burstGold();
+      onSent?.();
+      setPreview(null);
+      setName("");
+      setElapsed(0);
+      setDuration(0);
+    } catch (err) {
+      console.error(err);
+      setError(
+        lang === "en"
+          ? "Unable to send the voice note right now."
+          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ù…Ù‚Ø·Ø¹ Ø§Ù„ØµÙˆØªÙŠ Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+      );
+    }
   };
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -83,7 +100,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1 }}
           className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
         >
-          {lang === "en" ? "Voice from the heart" : "صوت من القلب"}
+          {lang === "en" ? "Voice from the heart" : "ØµÙˆØª Ù…Ù† Ø§Ù„Ù‚Ù„Ø¨"}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -92,10 +109,10 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1, delay: 0.1 }}
           className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
         >
-          {lang === "en" ? "Record a wish in your voice" : "سجّل أمنيتك بصوتك"}
+          {lang === "en" ? "Record a wish in your voice" : "Ø³Ø¬Ù‘Ù„ Ø£Ù…Ù†ÙŠØªÙƒ Ø¨ØµÙˆØªÙƒ"}
         </motion.h2>
 
-        <div className="mt-10 glass-gold rounded-3xl p-8">
+        <div className="mt-10 rounded-3xl glass-gold p-8">
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -131,11 +148,11 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
             <p className="mt-1 text-[10px] uppercase tracking-[0.3em] text-foreground/50">
               {recording
                 ? lang === "en"
-                  ? "Recording…"
-                  : "جاري التسجيل…"
+                  ? "Recordingâ€¦"
+                  : "Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ³Ø¬ÙŠÙ„â€¦"
                 : lang === "en"
                   ? "Tap to record"
-                  : "اضغط للتسجيل"}
+                  : "Ø§Ø¶ØºØ· Ù„Ù„ØªØ³Ø¬ÙŠÙ„"}
             </p>
             {error && <p className="mt-3 text-xs text-destructive">{error}</p>}
           </div>
@@ -144,10 +161,13 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
             <div className="mt-6 rounded-xl border border-gold/30 bg-onyx/40 p-4">
               <audio src={preview} controls className="w-full" />
               <button
-                onClick={save}
-                className="mt-4 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform"
+                onClick={() => {
+                  void save();
+                }}
+                disabled={!ready}
+                className="mt-4 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-40"
               >
-                {lang === "en" ? "Send Voice Note" : "أرسل المقطع"}
+                {lang === "en" ? "Send Voice Note" : "Ø£Ø±Ø³Ù„ Ø§Ù„Ù…Ù‚Ø·Ø¹"}
               </button>
             </div>
           )}

@@ -1,47 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LangProvider } from "@/lib/i18n";
 import {
-  store,
+  InvitationDataProvider,
   type RsvpEntry,
   type MsgEntry,
   type DrawingEntry,
   type VoiceEntry,
-} from "@/lib/store";
+  useInvitationData,
+} from "@/lib/invitation-data";
 import { EVENT } from "@/lib/event";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: `Admin · ${EVENT.bride.en} & ${EVENT.groom.en}` }] }),
+  head: () => ({ meta: [{ title: `Admin Â· ${EVENT.bride.en} & ${EVENT.groom.en}` }] }),
   component: () => (
     <LangProvider>
-      <Admin />
+      <InvitationDataProvider>
+        <Admin />
+      </InvitationDataProvider>
     </LangProvider>
   ),
 });
 
-function useStore() {
-  const [v, setV] = useState(0);
-  useEffect(() => {
-    const handler = () => setV((x) => x + 1);
-    window.addEventListener("wedding-store-update", handler);
-    window.addEventListener("storage", handler);
-    return () => {
-      window.removeEventListener("wedding-store-update", handler);
-      window.removeEventListener("storage", handler);
-    };
-  }, []);
-  return v;
-}
-
 function Admin() {
-  useStore();
+  const { loading, error, rsvps, msgs, draws, voices } = useInvitationData();
   const [tab, setTab] = useState<"overview" | "rsvp" | "messages" | "drawings" | "voice">(
     "overview",
   );
-  const rsvps = store.rsvp.list();
-  const msgs = store.msg.list();
-  const draws = store.draw.list();
-  const voices = store.voice.list();
 
   const yes = rsvps.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0);
   const maybe = rsvps.filter((r) => r.choice === "maybe").length;
@@ -101,12 +86,19 @@ function Admin() {
               className={`rounded-full px-4 py-2 text-xs uppercase tracking-[0.3em] transition-all ${tab === t.k ? "bg-gradient-to-r from-gold-deep to-gold text-onyx" : "glass text-foreground/60 hover:text-gold"}`}
             >
               {t.label}
-              {t.count ? ` · ${t.count}` : ""}
+              {t.count ? ` Â· ${t.count}` : ""}
             </button>
           ))}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 space-y-4">
+          {loading && (
+            <p className="rounded-2xl glass p-6 text-sm text-foreground/60">
+              Loading shared data...
+            </p>
+          )}
+          {error && <p className="rounded-2xl glass p-6 text-sm text-destructive">{error}</p>}
+
           {tab === "overview" && (
             <div className="grid gap-4 sm:grid-cols-3">
               <Stat label="Attending (guests)" value={yes} accent />
@@ -139,7 +131,7 @@ function Admin() {
                     "{m.text}"
                   </p>
                   <p className="mt-3 text-xs text-foreground/60">
-                    — {m.name} · {new Date(m.ts).toLocaleString()}
+                    â€” {m.name} Â· {new Date(m.ts).toLocaleString()}
                   </p>
                 </div>
               ))}
@@ -147,7 +139,7 @@ function Admin() {
           )}
 
           {tab === "drawings" && (
-            <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
               {draws.length === 0 && <Empty />}
               {draws.map((d: DrawingEntry) => (
                 <div key={d.id} className="glass rounded-2xl p-3">
@@ -168,7 +160,7 @@ function Admin() {
               {voices.map((v: VoiceEntry) => (
                 <div key={v.id} className="glass rounded-2xl p-5">
                   <p className="text-xs text-foreground/60">
-                    {v.name} · {v.duration}s · {new Date(v.ts).toLocaleString()}
+                    {v.name} Â· {v.duration}s Â· {new Date(v.ts).toLocaleString()}
                   </p>
                   <audio src={v.dataUrl} controls className="mt-2 w-full" />
                 </div>

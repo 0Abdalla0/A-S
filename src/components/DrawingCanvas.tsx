@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useLang } from "@/lib/i18n";
-import { store } from "@/lib/store";
+import { useInvitationData } from "@/lib/invitation-data";
 import { burstGold } from "@/lib/confetti";
 
 const palette = ["#b06a7c", "#d8a7b1", "#c9a227", "#8e4c5f", "#a89bc4", "#7fa8ac"];
 
 export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
   const { t, lang } = useLang();
+  const { ready, submitDrawing } = useInvitationData();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [color, setColor] = useState(palette[0]);
   const [size, setSize] = useState(3);
   const [name, setName] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const drawing = useRef(false);
   const last = useRef<{ x: number; y: number } | null>(null);
 
@@ -26,7 +29,6 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.fillStyle = "rgba(255,255,255,1)";
-
     ctx.fillRect(0, 0, rect.width, rect.height);
   }, []);
 
@@ -40,6 +42,7 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     last.current = pos(e);
     (e.target as Element).setPointerCapture(e.pointerId);
   };
+
   const move = (e: React.PointerEvent) => {
     if (!drawing.current) return;
     const ctx = canvasRef.current!.getContext("2d")!;
@@ -48,13 +51,13 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     ctx.lineWidth = size;
     ctx.shadowColor = "rgba(216,167,177,0.35)";
     ctx.shadowBlur = 4;
-
     ctx.beginPath();
     ctx.moveTo(last.current!.x, last.current!.y);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
     last.current = p;
   };
+
   const end = () => {
     drawing.current = false;
     last.current = null;
@@ -68,13 +71,30 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     ctx.fillRect(0, 0, r.width, r.height);
   };
 
-  const save = () => {
+  const save = async () => {
     const dataUrl = canvasRef.current!.toDataURL("image/png");
-    store.draw.add({ name: name.trim() || (lang === "en" ? "Guest" : "ضيف"), dataUrl });
-    burstGold();
-    onSent?.();
-    clear();
-    setName("");
+
+    try {
+      setSaving(true);
+      setError(null);
+      await submitDrawing({
+        name: name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ"),
+        dataUrl,
+      });
+      burstGold();
+      onSent?.();
+      clear();
+      setName("");
+    } catch (err) {
+      console.error(err);
+      setError(
+        lang === "en"
+          ? "Unable to save the sketch right now."
+          : "ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ø±Ø³Ù…Ø© Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -87,7 +107,7 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1 }}
           className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
         >
-          {lang === "en" ? "Sketch a wish" : "ارسم أمنية"}
+          {lang === "en" ? "Sketch a wish" : "Ø§Ø±Ø³Ù… Ø£Ù…Ù†ÙŠØ©"}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -96,10 +116,12 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1, delay: 0.1 }}
           className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
         >
-          {lang === "en" ? "Draw us something beautiful" : "ارسم لنا شيئًا جميلًا"}
+          {lang === "en"
+            ? "Draw us something beautiful"
+            : "Ø§Ø±Ø³Ù… Ù„Ù†Ø§ Ø´ÙŠØ¦Ù‹Ø§ Ø¬Ù…ÙŠÙ„Ù‹Ø§"}
         </motion.h2>
 
-        <div className="mt-10 glass-gold rounded-3xl p-4 sm:p-6">
+        <div className="mt-10 rounded-3xl glass-gold p-4 sm:p-6">
           <canvas
             ref={canvasRef}
             onPointerDown={start}
@@ -115,7 +137,9 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
               <button
                 key={c}
                 onClick={() => setColor(c)}
-                className={`h-7 w-7 rounded-full border border-border transition-transform hover:scale-110 ${color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-background" : ""}`}
+                className={`h-7 w-7 rounded-full border border-border transition-transform hover:scale-110 ${
+                  color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-background" : ""
+                }`}
                 style={{ background: c }}
                 aria-label="color"
               />
@@ -141,15 +165,25 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
               onClick={clear}
               className="rounded-full glass px-5 py-3 text-xs uppercase tracking-[0.3em] text-foreground/70 hover:text-gold"
             >
-              {lang === "en" ? "Clear" : "مسح"}
+              {lang === "en" ? "Clear" : "Ù…Ø³Ø­"}
             </button>
             <button
-              onClick={save}
-              className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] hover:scale-[1.02] transition-transform"
+              onClick={() => {
+                void save();
+              }}
+              disabled={!ready || saving}
+              className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-40"
             >
-              {lang === "en" ? "Save Sketch" : "احفظ الرسمة"}
+              {saving
+                ? lang === "en"
+                  ? "Saving..."
+                  : "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸..."
+                : lang === "en"
+                  ? "Save Sketch"
+                  : "Ø§Ø­ÙØ¸ Ø§Ù„Ø±Ø³Ù…Ø©"}
             </button>
           </div>
+          {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
         </div>
       </div>
     </section>
