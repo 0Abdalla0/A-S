@@ -92,6 +92,8 @@ function choiceToStatus(choice: RsvpChoice): "attending" | "tentative" | "declin
 
 async function resolveInvitationContext(): Promise<InvitationContextState> {
   const hashtag = EVENT.hashtag.trim();
+  const brideName = EVENT.bride.en.trim();
+  const groomName = EVENT.groom.en.trim();
 
   let coupleId: string | null = null;
 
@@ -111,8 +113,8 @@ async function resolveInvitationContext(): Promise<InvitationContextState> {
     const { data, error } = await supabase
       .from("couples")
       .select("id")
-      .eq("bride_first_name_en", EVENT.bride.en)
-      .eq("groom_first_name_en", EVENT.groom.en)
+      .eq("bride_first_name_en", brideName)
+      .eq("groom_first_name_en", groomName)
       .limit(1)
       .maybeSingle();
 
@@ -121,8 +123,25 @@ async function resolveInvitationContext(): Promise<InvitationContextState> {
   }
 
   if (!coupleId) {
-    throw new Error(
-      "Could not resolve the current couple in Supabase. Match the couple names or hashtag in src/lib/event.ts.",
+    const { data, error } = await supabase
+      .from("couples")
+      .select("id, slug, hashtag, bride_first_name_en, groom_first_name_en")
+      .eq("is_published", true)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    coupleId = data?.id ?? null;
+
+    if (!coupleId) {
+      throw new Error(
+        "Could not resolve the current couple in Supabase. Match the couple names or hashtag in src/lib/event.ts, or ensure at least one published couple exists.",
+      );
+    }
+
+    console.warn(
+      `[Invitation] Falling back to published couple because no exact match was found for bride="${brideName}", groom="${groomName}", hashtag="${hashtag}".`,
     );
   }
 
