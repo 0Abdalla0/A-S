@@ -51,19 +51,20 @@ function Ring({ position, color, scale = 1, rotationOffset = 0 }: { position: [n
 function Scene() {
   return (
     <>
-      <color attach="background" args={["#0a0807"]} />
-      <fog attach="fog" args={["#0a0807", 6, 14]} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow color="#fce8b5" />
-      <directionalLight position={[-5, 3, -5]} intensity={0.6} color="#d4af37" />
-      <pointLight position={[0, -2, 3]} intensity={0.8} color="#fff5d6" />
+      <color attach="background" args={["#fff9fa"]} />
+      <fog attach="fog" args={["#fff9fa", 7, 15]} />
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[5, 5, 5]} intensity={1.4} castShadow color="#fff1f3" />
+      <directionalLight position={[-5, 3, -5]} intensity={0.5} color="#d8a7b1" />
+      <pointLight position={[0, -2, 3]} intensity={0.7} color="#f6d5dc" />
 
-      <Ring position={[-1.1, 0.2, 0]} color="#e6c46a" scale={0.95} />
-      <Ring position={[1.1, -0.1, 0]} color="#f0d27a" scale={0.85} rotationOffset={Math.PI / 3} />
+      <Ring position={[-1.1, 0.2, 0]} color="#d8a7b1" scale={0.95} />
+      <Ring position={[1.1, -0.1, 0]} color="#e2c977" scale={0.85} rotationOffset={Math.PI / 3} />
 
-      <Sparkles count={60} scale={[8, 4, 4]} size={3} speed={0.4} color="#fce8b5" />
-      <ContactShadows position={[0, -1.6, 0]} opacity={0.6} scale={8} blur={2.5} far={4} color="#000" />
-      <Environment preset="sunset" />
+      <Sparkles count={60} scale={[8, 4, 4]} size={3} speed={0.4} color="#c9a227" />
+      <ContactShadows position={[0, -1.6, 0]} opacity={0.25} scale={8} blur={2.8} far={4} color="#d8a7b1" />
+      <Environment preset="studio" />
+
     </>
   );
 }
@@ -90,7 +91,7 @@ export function Rings3D() {
 
         <div className="mt-12 relative h-[460px] w-full overflow-hidden rounded-3xl glass-gold sm:h-[560px]">
           <div className="absolute inset-0 pointer-events-none z-10"
-            style={{ background: "radial-gradient(ellipse at center, transparent 40%, oklch(0.08 0.005 60 / 0.7) 100%)" }} />
+            style={{ background: "radial-gradient(ellipse at center, transparent 45%, rgba(246,213,220,0.55) 100%)" }} />
           <Canvas shadows dpr={[1, 1.8]} camera={{ position: [0, 0.2, 4.2], fov: 45 }}>
             <Suspense fallback={null}>
               <Scene />
