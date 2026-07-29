@@ -1,7 +1,7 @@
 // Edit these values to customize the invitation
 export const EVENT = {
-  groom: { en: "Loay Shahin", ar: "لؤى شاهين" },
-  bride: { en: "Menna Abdelrassoul", ar: " منه عبدالرسول" },
+  groom: { en: "Loay", ar: "لؤى " },
+  bride: { en: "Mennatallah", ar: " منة الله" },
   // Placeholder: 90 days from build time. Replace with exact ISO date.
   dateISO: "2026-08-12T19:00:00+19:30",
   venue: {
@@ -12,5 +12,5 @@ export const EVENT = {
     },
     mapsQuery: "Salah Salem St Cairo",
   },
-  hashtag: "#LoayandMenna",
+  hashtag: "#LoayandMennatallah",
 };

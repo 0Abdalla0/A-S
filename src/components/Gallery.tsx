@@ -4,17 +4,17 @@ import { useLang } from "@/lib/i18n";
 import g1 from "@/assets/L&M/1.jpeg";
 import g2 from "@/assets/L&M/2.jpeg";
 import g3 from "@/assets/L&M/3.jpeg";
-import g4 from "@/assets/L&M/4.jpeg";
-import g5 from "@/assets/L&M/5.jpeg";
-import g6 from "@/assets/L&M/6.jpeg";
+// import g4 from "@/assets/L&M/4.jpeg";
+// import g5 from "@/assets/L&M/5.jpeg";
+// import g6 from "@/assets/L&M/6.jpeg";
 
 const photos = [
   { src: g1, span: "row-span-3" },
-  { src: g2, span: "row-span-2" },
+  { src: g2, span: "row-span-3" },
   { src: g3, span: "row-span-3" },
-  { src: g4, span: "row-span-2" },
-  { src: g5, span: "row-span-3" },
-  { src: g6, span: "row-span-2" },
+  // { src: g4, span: "row-span-2" },
+  // { src: g5, span: "row-span-3" },
+  // { src: g6, span: "row-span-2" },
 ];
 
 export function Gallery() {

@@ -13,10 +13,10 @@ function useStore() {
   const [v, setV] = useState(0);
   useEffect(() => {
     const handler = () => setV((x) => x + 1);
-    window.addEventListener("engagement-store-update", handler);
+    window.addEventListener("wedding-store-update", handler);
     window.addEventListener("storage", handler);
     return () => {
-      window.removeEventListener("engagement-store-update", handler);
+      window.removeEventListener("wedding-store-update", handler);
       window.removeEventListener("storage", handler);
     };
   }, []);
@@ -39,7 +39,7 @@ function Admin() {
     const blob = new Blob([JSON.stringify({ rsvps, msgs, draws, voices }, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url; a.download = "engagement-export.json"; a.click();
+    a.href = url; a.download = "wedding-export.json"; a.click();
     URL.revokeObjectURL(url);
   };
 

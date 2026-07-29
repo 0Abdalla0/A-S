@@ -18,12 +18,12 @@ export const dict: Dict = {
     en: "Every great love begins with a single moment.",
     ar: "كل حب عظيم يبدأ بلحظة واحدة.",
   },
-  story1Title: { en: "First Glance", ar: "نظرة أولى" },
+  story1Title: { en: "Reciters of Al-Fatihah", ar: "قراء الفاتحة" },
   story1Body: {
     en: "A quiet evening, a shared smile — and everything changed.",
     ar: "أمسية هادئة، وابتسامة جمعتنا، فتغيّر كل شيء.",
   },
-  story1Date: { en: "11 Nov 2024", ar: "١١ نوفمبر ٢٠٢٤" },
+  story1Date: { en: "20 Dec 2024", ar: "٢٠ ديسمبر ٢٠٢٤" },
   story2Date: { en: "5 Sep 2025", ar: "٥ سبتمبر ٢٠٢٥" },
   story2Title: { en: "Engagement", ar: "الخطوبة" },
   story2Body: {
@@ -31,7 +31,7 @@ export const dict: Dict = {
     ar: "تحت سماء ذهبية، سألها فأجابت بنعم.",
   },
   story3Date: { en: "12 Aug 2025", ar: " ١٢ أغسطس ٢٠٢٦ " },
-  story3Title: { en: "Marriage", ar: "الزواج" },
+  story3Title: { en: "Wedding", ar: "الزواج" },
   story3Body: {
     en: "Tonight, we celebrate the beginning of forever.",
     ar: "الليلة، نحتفل ببداية الأبد.",
