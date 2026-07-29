@@ -91,8 +91,9 @@ export function IntroEnvelope({ onOpen }: { onOpen: () => void }) {
                 style={{
                   borderLeft: "calc(min(86vw,420px)/2) solid transparent",
                   borderRight: "calc(min(86vw,420px)/2) solid transparent",
-                  borderTop: "calc(min(86vw,420px)/3) solid oklch(0.22 0.012 70)",
-                  filter: "drop-shadow(0 4px 16px oklch(0 0 0 / 0.4))",
+                  borderTop: "calc(min(86vw,420px)/3) solid #f6d5dc",
+                  filter: "drop-shadow(0 6px 18px rgba(216,167,177,0.35))",
+
                 }}
               />
             </motion.div>

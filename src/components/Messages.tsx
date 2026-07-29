@@ -5,12 +5,13 @@ import { store } from "@/lib/store";
 import { burstGold } from "@/lib/confetti";
 
 const colors = [
-  "oklch(0.78 0.12 80)",   // gold
-  "oklch(0.92 0.04 85)",   // champagne
-  "oklch(0.85 0.08 25)",   // rose
-  "oklch(0.75 0.1 320)",   // mauve
-  "oklch(0.85 0.06 200)",  // sky
-  "oklch(0.97 0.015 85)",  // ivory
+  "#b06a7c",   // rose gold
+  "#8e4c5f",   // deep rose
+  "#c9a227",   // accent gold
+  "#8a6fa8",   // mauve
+  "#5f8b93",   // dusty teal
+  "#4b3a3f",   // ink
+
 ];
 
 type Msg = { name: string; text: string; color: string; ts: number };
@@ -91,7 +92,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
                     key={c}
                     onClick={() => setColor(c)}
                     className={`h-6 w-6 rounded-full transition-transform hover:scale-110 ${
-                      color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-onyx" : ""
+                      color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-background" : ""
                     }`}
                     style={{ background: c }}
                     aria-label="color"

@@ -92,7 +92,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
               className={`relative flex h-24 w-24 items-center justify-center rounded-full transition-all ${recording ? "bg-destructive/30" : "bg-gradient-to-br from-gold-deep to-gold"}`}
               style={{ animation: recording ? "pulse-gold 1.2s infinite" : undefined }}
             >
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke={recording ? "#fff" : "#1a1410"} strokeWidth="1.8">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke={recording ? "#8e4c5f" : "#ffffff"} strokeWidth="1.8">
                 {recording ? (
                   <rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" />
                 ) : (

@@ -4,7 +4,7 @@ import { useLang } from "@/lib/i18n";
 import { store } from "@/lib/store";
 import { burstGold } from "@/lib/confetti";
 
-const palette = ["#e6c878", "#f5e6c8", "#ffffff", "#e8a3b3", "#b8a4d4", "#9bc4d4"];
+const palette = ["#b06a7c", "#d8a7b1", "#c9a227", "#8e4c5f", "#a89bc4", "#7fa8ac"];
 
 export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
   const { t, lang } = useLang();
@@ -25,7 +25,8 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     ctx.scale(dpr, dpr);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.fillStyle = "rgba(20,15,10,1)";
+    ctx.fillStyle = "rgba(255,255,255,1)";
+
     ctx.fillRect(0, 0, rect.width, rect.height);
   }, []);
 
@@ -45,8 +46,9 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     const p = pos(e);
     ctx.strokeStyle = color;
     ctx.lineWidth = size;
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 8;
+    ctx.shadowColor = "rgba(216,167,177,0.35)";
+    ctx.shadowBlur = 4;
+
     ctx.beginPath();
     ctx.moveTo(last.current!.x, last.current!.y);
     ctx.lineTo(p.x, p.y);
@@ -59,7 +61,7 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
     const r = canvas.getBoundingClientRect();
-    ctx.fillStyle = "rgba(20,15,10,1)";
+    ctx.fillStyle = "rgba(255,255,255,1)";
     ctx.fillRect(0, 0, r.width, r.height);
   };
 
@@ -98,17 +100,18 @@ export function DrawingCanvas({ onSent }: { onSent?: () => void }) {
             onPointerUp={end}
             onPointerLeave={end}
             className="h-[320px] w-full touch-none rounded-2xl border border-gold/30 sm:h-[420px]"
-            style={{ background: "oklch(0.12 0.005 60)" }}
+            style={{ background: "#ffffff" }}
           />
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
             {palette.map((c) => (
               <button key={c} onClick={() => setColor(c)}
-                className={`h-7 w-7 rounded-full transition-transform hover:scale-110 ${color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-onyx" : ""}`}
+                className={`h-7 w-7 rounded-full border border-border transition-transform hover:scale-110 ${color === c ? "ring-2 ring-gold ring-offset-2 ring-offset-background" : ""}`}
                 style={{ background: c }} aria-label="color" />
             ))}
             <input type="range" min={1} max={12} value={size} onChange={(e) => setSize(+e.target.value)}
-              className="ml-2 accent-[oklch(0.78_0.12_80)]" />
+              className="ml-2 accent-[#b06a7c]" />
+
           </div>
 
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
