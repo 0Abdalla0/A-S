@@ -19,7 +19,7 @@ export function InvitationCard() {
     if (!cardRef.current) return;
     setBusy(true);
     try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, cacheBust: true, backgroundColor: "#0a0807" });
+      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, cacheBust: true, backgroundColor: "#ffffff" });
       const link = document.createElement("a");
       link.download = `invitation-${EVENT.bride.en}-${EVENT.groom.en}.png`;
       link.href = dataUrl;
@@ -32,7 +32,7 @@ export function InvitationCard() {
     if (!navigator.share) return download();
     setBusy(true);
     try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, backgroundColor: "#0a0807" });
+      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, backgroundColor: "#ffffff" });
       const blob = await (await fetch(dataUrl)).blob();
       const file = new File([blob], "invitation.png", { type: "image/png" });
       await navigator.share({ files: [file], title: `${EVENT.bride.en} & ${EVENT.groom.en}`, text: "You're invited to our engagement ✨" });
@@ -65,7 +65,7 @@ export function InvitationCard() {
         >
           <div ref={cardRef} className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl"
             style={{
-              background: "radial-gradient(ellipse at top, oklch(0.22 0.02 70) 0%, oklch(0.08 0.005 60) 80%)",
+              background: "radial-gradient(ellipse at top, #ffffff 0%, #fdeef2 78%)",
               boxShadow: "var(--shadow-elegant)",
             }}>
             <div className="absolute inset-3 rounded-2xl border border-gold/30" />
@@ -79,11 +79,11 @@ export function InvitationCard() {
               </div>
 
               <div>
-                <p className="font-script text-5xl text-gradient-gold leading-none">
+                <p className="font-script text-5xl text-gold-deep leading-none">
                   {EVENT.bride[lang]}
                 </p>
                 <p className="my-3 font-display italic text-2xl text-gold">&</p>
-                <p className="font-script text-5xl text-gradient-gold leading-none">
+                <p className="font-script text-5xl text-gold-deep leading-none">
                   {EVENT.groom[lang]}
                 </p>
               </div>

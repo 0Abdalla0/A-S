@@ -1,6 +1,4 @@
-/* Rose Gold Theme CSS */
-/* Replace your existing file with this version.
-   This is the same edited theme shared in chat, packaged as a file. */
+/* Luxury Rose Gold Wedding Theme */
 
 @import "tailwindcss" source(none);
 @source "../src";
@@ -8,14 +6,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Pinyon+Script&display=swap");
-
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 6px);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -37,61 +33,231 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* Legacy token names kept so every existing component restyles at once */
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-gold-deep: var(--gold-deep);
   --color-champagne: var(--champagne);
   --color-ivory: var(--ivory);
   --color-onyx: var(--onyx);
+  --color-rose: var(--rose);
+  --color-blush: var(--blush);
+  --color-accent-gold: var(--accent-gold);
 
-  --font-display: "Cormorant Garamond", serif;
+  --font-display: "Cormorant Garamond", "Playfair Display", serif;
   --font-script: "Pinyon Script", cursive;
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "Poppins", "Inter", sans-serif;
 }
 
-:root{
-  --radius:.75rem;
-  --background:oklch(.14 .01 340);
-  --foreground:oklch(.97 .01 20);
-  --card:oklch(.18 .015 340);
-  --card-foreground:var(--foreground);
-  --popover:oklch(.16 .015 340);
-  --popover-foreground:var(--foreground);
+:root {
+  --radius: 1.25rem;
 
-  --primary:oklch(.77 .14 355);
-  --primary-foreground:oklch(.13 .01 340);
-  --secondary:oklch(.22 .015 340);
-  --secondary-foreground:var(--foreground);
-  --muted:oklch(.22 .012 340);
-  --muted-foreground:oklch(.74 .03 350);
-  --accent:oklch(.89 .07 355);
-  --accent-foreground:var(--primary-foreground);
+  /* Core palette */
+  --rose: #d8a7b1;
+  --rose-deep: #b06a7c;
+  --rose-deeper: #8e4c5f;
+  --blush: #f6d5dc;
+  --soft-white: #fff9fa;
+  --accent-gold: #c9a227;
+  --gold-light: #e2c977;
+  --text-dark: #4b3a3f;
+  --text-light: #7a656a;
+  --line: #f0d7de;
 
-  --destructive:oklch(.60 .18 15);
-  --destructive-foreground:oklch(.98 .01 20);
+  --background: var(--soft-white);
+  --foreground: var(--text-dark);
+  --card: #ffffff;
+  --card-foreground: var(--text-dark);
+  --popover: #ffffff;
+  --popover-foreground: var(--text-dark);
 
-  --border:oklch(.77 .14 355/.18);
-  --input:oklch(.77 .14 355/.22);
-  --ring:oklch(.77 .14 355/.55);
+  --primary: var(--rose);
+  --primary-foreground: #ffffff;
+  --secondary: var(--blush);
+  --secondary-foreground: var(--text-dark);
+  --muted: #fdf3f5;
+  --muted-foreground: var(--text-light);
+  --accent: var(--blush);
+  --accent-foreground: var(--text-dark);
 
-  --gold:oklch(.77 .14 355);
-  --gold-soft:oklch(.92 .05 355);
-  --gold-deep:oklch(.60 .16 350);
-  --champagne:oklch(.95 .03 15);
-  --ivory:oklch(.98 .01 20);
-  --onyx:oklch(.11 .01 340);
+  --destructive: #b4404f;
+  --destructive-foreground: #ffffff;
 
-  --gradient-gold:linear-gradient(135deg,oklch(.58 .16 345),oklch(.94 .04 355) 45%,oklch(.77 .14 355));
-  --gradient-gold-text:linear-gradient(180deg,oklch(.99 .01 10),oklch(.90 .06 355) 25%,oklch(.78 .14 355) 60%,oklch(.58 .16 345));
-  --gradient-radial-glow:radial-gradient(ellipse at center,oklch(.78 .14 355/.25),transparent 65%);
-  --gradient-page:radial-gradient(ellipse at top,oklch(.22 .02 340),oklch(.11 .01 330) 70%);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: rgba(201, 162, 39, 0.45);
 
-  --shadow-gold:0 0 40px oklch(.77 .14 355/.35),0 0 80px oklch(.77 .14 355/.18);
-  --shadow-elegant:0 30px 60px -20px oklch(0 0 0/.65),0 0 0 1px oklch(.77 .14 355/.08);
-  --shadow-glass:inset 0 1px 0 oklch(1 0 0/.08),0 30px 80px -20px oklch(0 0 0/.55);
+  /* Legacy aliases: "gold" now reads as rose-gold, onyx as white, ivory as dark ink */
+  --gold: var(--rose-deep);
+  --gold-soft: #c98f9c;
+  --gold-deep: var(--rose-deeper);
+  --champagne: var(--blush);
+  --ivory: var(--text-dark);
+  --onyx: #ffffff;
 
-  --ease-luxury:cubic-bezier(.22,1,.36,1);
+  --gradient-gold: linear-gradient(135deg, #b06a7c, #d8a7b1 55%, #e2c977);
+  --gradient-gold-text: linear-gradient(180deg, #c98f9c, #b06a7c 55%, #8e4c5f);
+  --gradient-radial-glow: radial-gradient(ellipse at center, rgba(246, 213, 220, 0.55), transparent 68%);
+  --gradient-page: radial-gradient(ellipse at top, #fff9fa, #fbeef1 70%);
+
+  --shadow-gold: 0 10px 35px rgba(216, 167, 177, 0.25);
+  --shadow-elegant: 0 18px 45px -18px rgba(216, 167, 177, 0.4), 0 0 0 1px rgba(240, 215, 222, 0.9);
+  --shadow-glass: 0 10px 35px rgba(216, 167, 177, 0.15);
+
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Keep the rest of your original file unchanged.
-Only the palette above has been converted to a rose-gold theme. */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 15% 0%, rgba(246, 213, 220, 0.7), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 25%, rgba(226, 201, 119, 0.12), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(246, 213, 220, 0.55), transparent 65%);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    font-weight: 400;
+  }
+
+  ::selection {
+    background: var(--blush);
+    color: var(--text-dark);
+  }
+
+  input,
+  textarea,
+  select {
+    border-radius: 14px;
+  }
+}
+
+/* ---------- Surfaces ---------- */
+@utility glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility glass-gold {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(216, 167, 177, 0.5);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility gold-border {
+  border: 1px solid rgba(176, 106, 124, 0.5);
+}
+
+/* ---------- Text & dividers ---------- */
+@utility text-gradient-gold {
+  background: var(--gradient-gold-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility divider-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(201, 162, 39, 0.55) 25%,
+    rgba(216, 167, 177, 0.9) 50%,
+    rgba(201, 162, 39, 0.55) 75%,
+    transparent
+  );
+}
+
+@utility hover-lift {
+  transition: transform 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 45px rgba(216, 167, 177, 0.28);
+  }
+}
+
+/* ---------- Motion ---------- */
+@keyframes float-up {
+  0% {
+    transform: translateY(105vh) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-gold {
+  0%,
+  100% {
+    box-shadow: 0 10px 30px rgba(216, 167, 177, 0.3);
+  }
+  50% {
+    box-shadow: 0 14px 44px rgba(216, 167, 177, 0.55);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(110vh) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.7s var(--ease-luxury) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

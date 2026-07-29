@@ -16,11 +16,20 @@ export function Hero() {
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       {/* BG image with parallax-like fade */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" width={1920} height={1080} className="h-full w-full object-cover opacity-40" />
+        <img
+          src={heroBg}
+          alt=""
+          width={1920}
+          height={1080}
+          className="h-full w-full object-cover opacity-[0.18]"
+          style={{ filter: "saturate(0.55) brightness(1.35) sepia(0.15)" }}
+        />
         <div className="absolute inset-0" style={{
-          background: "radial-gradient(ellipse at center, transparent 0%, var(--onyx) 80%)",
+          background: "radial-gradient(ellipse at center, rgba(255,249,250,0.35) 0%, var(--onyx) 78%)",
         }} />
+        <div className="absolute inset-0" style={{ background: "var(--gradient-radial-glow)" }} />
       </div>
+
 
       {/* Particles */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
