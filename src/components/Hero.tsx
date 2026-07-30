@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { EVENT } from "@/lib/event";
 import heroBg from "@/assets/hero-bg.jpg";
+import ourSong from "@/music/our-song.mp3";
 
 export function Hero() {
   const { lang, t } = useLang();
@@ -45,7 +46,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       {/* Hidden Audio */}
-      <audio ref={audioRef} src="/music/our-song.mp3" loop preload="auto" />
+      <audio ref={audioRef} src={ourSong} loop preload="auto" />
 
       {/* BG image with parallax-like fade */}
       <div className="absolute inset-0">
