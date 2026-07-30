@@ -54,16 +54,16 @@ export function Gallery() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: i * 0.06 }}
               onClick={() => setOpen(p.src)}
-              className={`group relative overflow-hidden rounded-xl ${p.span}`}
+              className={`group relative overflow-hidden rounded-xl glass-gold ${p.span}`}
             >
               <img
                 src={p.src}
                 alt=""
                 loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-110"
+                className="h-full w-full object-contain p-1 transition-transform duration-[1200ms] group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-onyx/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-30" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-gold/0 transition-all group-hover:ring-gold/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-onyx/20 via-transparent to-transparent opacity-40 transition-opacity group-hover:opacity-20 pointer-events-none" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-gold/0 transition-all group-hover:ring-gold/40 pointer-events-none" />
             </motion.button>
           ))}
         </div>
