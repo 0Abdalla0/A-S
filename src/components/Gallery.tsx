@@ -45,7 +45,7 @@ export function Gallery() {
           </motion.h2>
         </div>
 
-        <div className="mt-16 grid auto-rows-[140px] grid-cols-4 gap-3 sm:auto-rows-[180px] sm:grid-cols-4 sm:gap-4">
+        <div className="mt-16 grid auto-rows-[140px] grid-cols-2 gap-3 sm:auto-rows-[180px] sm:grid-cols-2 sm:gap-4">
           {photos.map((p, i) => (
             <motion.button
               key={i}
