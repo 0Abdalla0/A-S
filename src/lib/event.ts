@@ -1,7 +1,7 @@
 export const EVENT = {
   groom: { en: "Loay", ar: "لؤى" },
   bride: { en: "Mennatallah", ar: "منة الله" },
-  dateISO: "2026-08-12T19:19:30+03:00",
+  dateISO: "2026-08-12T19:19:41+03:00",
   venue: {
     name: { en: "Tuana hall", ar: "القاعة الكبرى" },
     address: {
