@@ -38,6 +38,7 @@ function Admin() {
   const [tab, setTab] = useState<"overview" | "rsvp" | "messages" | "drawings" | "voice">(
     "overview",
   );
+  const [selectedDrawing, setSelectedDrawing] = useState<DrawingEntry | null>(null);
 
   // Password protection state
   const [isMounted, setIsMounted] = useState(false);
@@ -265,7 +266,8 @@ function Admin() {
                   <img
                     src={d.dataUrl}
                     alt={`Sketch by ${d.name}`}
-                    className="aspect-square w-full rounded-xl object-cover"
+                    className="aspect-square w-full rounded-xl object-cover cursor-pointer hover:scale-[1.02] transition-transform"
+                    onClick={() => setSelectedDrawing(d)}
                   />
                   <p className="mt-2 text-xs text-foreground/60">{d.name}</p>
                   <button
@@ -328,6 +330,43 @@ function Admin() {
           )}
         </div>
       </div>
+      {selectedDrawing && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 cursor-pointer"
+          onClick={() => setSelectedDrawing(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl rounded-3xl glass-gold p-4 sm:p-6 text-center cursor-default animate-fade-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedDrawing(null)}
+              className="absolute top-4 right-4 rounded-full bg-foreground/10 p-2 text-foreground/80 hover:text-foreground hover:bg-foreground/20 cursor-pointer transition-colors"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="mt-6 border border-gold/20 rounded-2xl overflow-hidden bg-white p-2">
+              <img
+                src={selectedDrawing.dataUrl}
+                alt={`Sketch by ${selectedDrawing.name}`}
+                className="max-h-[70vh] w-full object-contain mx-auto rounded-xl"
+              />
+            </div>
+            <p className="mt-4 font-display text-gradient-gold text-lg italic">
+              Sketch by {selectedDrawing.name}
+            </p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
