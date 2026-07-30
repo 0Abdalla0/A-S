@@ -3,7 +3,7 @@ export const EVENT = {
   groom: { en: "Loay", ar: "لؤى " },
   bride: { en: "Mennatallah", ar: " منة الله" },
   // Placeholder: 90 days from build time. Replace with exact ISO date.
-  dateISO: "2026-08-12T19:00:00+19:30",
+  dateISO: "2026-08-12T19:19:30+3:00",
   venue: {
     name: { en: "Tuana hall", ar: "القاعة الكبرى" },
     address: {
