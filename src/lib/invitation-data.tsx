@@ -50,6 +50,10 @@ type InvitationContextValue = {
     duration: number;
     language: "en" | "ar";
   }) => Promise<void>;
+  deleteRsvp: (id: string) => Promise<void>;
+  deleteMessage: (id: string) => Promise<void>;
+  deleteDrawing: (id: string) => Promise<void>;
+  deleteVoice: (id: string) => Promise<void>;
 };
 
 type InvitationContextState = {
@@ -377,6 +381,30 @@ export function InvitationDataProvider({ children }: { children: ReactNode }) {
     await refresh();
   };
 
+  const deleteRsvp = async (id: string) => {
+    const { error: deleteError } = await supabase.from("rsvp_responses").delete().eq("id", id);
+    if (deleteError) throw deleteError;
+    await refresh();
+  };
+
+  const deleteMessage = async (id: string) => {
+    const { error: deleteError } = await supabase.from("guest_messages").delete().eq("id", id);
+    if (deleteError) throw deleteError;
+    await refresh();
+  };
+
+  const deleteDrawing = async (id: string) => {
+    const { error: deleteError } = await supabase.from("guest_drawings").delete().eq("id", id);
+    if (deleteError) throw deleteError;
+    await refresh();
+  };
+
+  const deleteVoice = async (id: string) => {
+    const { error: deleteError } = await supabase.from("voice_notes").delete().eq("id", id);
+    if (deleteError) throw deleteError;
+    await refresh();
+  };
+
   return (
     <InvitationDataCtx.Provider
       value={{
@@ -392,6 +420,10 @@ export function InvitationDataProvider({ children }: { children: ReactNode }) {
         submitMessage,
         submitDrawing,
         submitVoice,
+        deleteRsvp,
+        deleteMessage,
+        deleteDrawing,
+        deleteVoice,
       }}
     >
       {children}
