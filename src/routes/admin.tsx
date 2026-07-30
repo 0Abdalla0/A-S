@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LangProvider } from "@/lib/i18n";
 import {
   InvitationDataProvider,
@@ -40,14 +40,17 @@ function Admin() {
   );
 
   // Password protection state
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (typeof window !== "undefined") {
-      return sessionStorage.getItem("admin_auth") === "true";
-    }
-    return false;
-  });
+  const [isMounted, setIsMounted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (sessionStorage.getItem("admin_auth") === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +86,14 @@ function Admin() {
     { k: "drawings", label: "Sketches", count: draws.length },
     { k: "voice", label: "Voice notes", count: voices.length },
   ];
+
+  if (!isMounted) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-foreground/60">Loading...</p>
+      </main>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
