@@ -21,12 +21,44 @@ export const Route = createFileRoute("/admin")({
     </LangProvider>
   ),
 });
-
 function Admin() {
-  const { loading, error, rsvps, msgs, draws, voices } = useInvitationData();
+  const {
+    loading,
+    error,
+    rsvps,
+    msgs,
+    draws,
+    voices,
+    deleteRsvp,
+    deleteMessage,
+    deleteDrawing,
+    deleteVoice,
+  } = useInvitationData();
+
   const [tab, setTab] = useState<"overview" | "rsvp" | "messages" | "drawings" | "voice">(
     "overview",
   );
+
+  // Password protection state
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("admin_auth") === "true";
+    }
+    return false;
+  });
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === "loay##menna") {
+      setIsAuthenticated(true);
+      sessionStorage.setItem("admin_auth", "true");
+      setAuthError("");
+    } else {
+      setAuthError("Incorrect password");
+    }
+  };
 
   const yes = rsvps.filter((r) => r.choice === "yes").reduce((s, r) => s + r.guests, 0);
   const maybe = rsvps.filter((r) => r.choice === "maybe").length;
@@ -52,6 +84,51 @@ function Admin() {
     { k: "voice", label: "Voice notes", count: voices.length },
   ];
 
+  if (!isAuthenticated) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-6 py-12 bg-background">
+        <div className="w-full max-w-md rounded-3xl glass-gold p-8 sm:p-10 text-center animate-fade-up">
+          <p className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80">
+            Protected Dashboard
+          </p>
+          <h1 className="mt-2 font-display text-4xl italic text-gradient-gold">
+            {EVENT.bride.en} & {EVENT.groom.en}
+          </h1>
+          <div className="divider-gold mx-auto my-6 w-24" />
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password..."
+                className="w-full rounded-xl border border-border/40 bg-onyx/40 px-4 py-3 text-sm text-center text-ivory outline-none placeholder:text-foreground/40 focus:border-gold/60"
+                autoFocus
+              />
+              {authError && <p className="mt-2 text-xs text-destructive">{authError}</p>}
+            </div>
+
+            <div className="flex gap-3">
+              <Link
+                to="/"
+                className="flex-1 rounded-full glass px-5 py-3 text-xs uppercase tracking-[0.3em] text-foreground/70 hover:text-gold flex items-center justify-center"
+              >
+                Back
+              </Link>
+              <button
+                type="submit"
+                className="flex-1 rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] cursor-pointer"
+              >
+                Access
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="mx-auto max-w-6xl">
@@ -65,7 +142,7 @@ function Admin() {
           <div className="flex gap-2">
             <button
               onClick={exportJSON}
-              className="rounded-full glass px-4 py-2 text-xs uppercase tracking-[0.3em] text-gold"
+              className="rounded-full glass px-4 py-2 text-xs uppercase tracking-[0.3em] text-gold cursor-pointer"
             >
               Export
             </button>
@@ -83,10 +160,10 @@ function Admin() {
             <button
               key={t.k}
               onClick={() => setTab(t.k)}
-              className={`rounded-full px-4 py-2 text-xs uppercase tracking-[0.3em] transition-all ${tab === t.k ? "bg-gradient-to-r from-gold-deep to-gold text-onyx" : "glass text-foreground/60 hover:text-gold"}`}
+              className={`rounded-full px-4 py-2 text-xs uppercase tracking-[0.3em] transition-all cursor-pointer ${tab === t.k ? "bg-gradient-to-r from-gold-deep to-gold text-onyx" : "glass text-foreground/60 hover:text-gold"}`}
             >
               {t.label}
-              {t.count ? ` Â· ${t.count}` : ""}
+              {t.count ? ` · ${t.count}` : ""}
             </button>
           ))}
         </div>
@@ -112,12 +189,23 @@ function Admin() {
 
           {tab === "rsvp" && (
             <Table
-              head={["Name", "Choice", "Guests", "When"]}
+              head={["Name", "Choice", "Guests", "When", "Actions"]}
               rows={rsvps.map((r: RsvpEntry) => [
                 r.name,
                 r.choice,
                 String(r.guests),
                 new Date(r.ts).toLocaleString(),
+                <button
+                  key={r.id}
+                  onClick={() => {
+                    if (confirm(`Are you sure you want to delete RSVP for ${r.name}?`)) {
+                      void deleteRsvp(r.id);
+                    }
+                  }}
+                  className="rounded-full bg-destructive/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-destructive hover:bg-destructive/20 transition-all cursor-pointer"
+                >
+                  Delete
+                </button>,
               ])}
             />
           )}
@@ -126,13 +214,33 @@ function Admin() {
             <div className="grid gap-4 sm:grid-cols-2">
               {msgs.length === 0 && <Empty />}
               {msgs.map((m: MsgEntry) => (
-                <div key={m.id} className="glass rounded-2xl p-5">
+                <div key={m.id} className="glass rounded-2xl p-5 relative group">
                   <p className="font-display italic" style={{ color: m.color, fontSize: "1.1rem" }}>
                     "{m.text}"
                   </p>
                   <p className="mt-3 text-xs text-foreground/60">
-                    â€” {m.name} Â· {new Date(m.ts).toLocaleString()}
+                    — {m.name} · {new Date(m.ts).toLocaleString()}
                   </p>
+                  <button
+                    onClick={() => {
+                      if (confirm(`Delete message from ${m.name}?`)) {
+                        void deleteMessage(m.id);
+                      }
+                    }}
+                    className="absolute top-4 right-4 rounded-full bg-destructive/10 p-2 text-destructive opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-destructive/20 cursor-pointer"
+                    aria-label="Delete message"
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
@@ -142,13 +250,33 @@ function Admin() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
               {draws.length === 0 && <Empty />}
               {draws.map((d: DrawingEntry) => (
-                <div key={d.id} className="glass rounded-2xl p-3">
+                <div key={d.id} className="glass rounded-2xl p-3 relative group">
                   <img
                     src={d.dataUrl}
                     alt={`Sketch by ${d.name}`}
                     className="aspect-square w-full rounded-xl object-cover"
                   />
                   <p className="mt-2 text-xs text-foreground/60">{d.name}</p>
+                  <button
+                    onClick={() => {
+                      if (confirm(`Delete sketch by ${d.name}?`)) {
+                        void deleteDrawing(d.id);
+                      }
+                    }}
+                    className="absolute top-3 right-3 rounded-full bg-destructive/10 p-2 text-destructive opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-destructive/20 cursor-pointer"
+                    aria-label="Delete drawing"
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
@@ -158,11 +286,31 @@ function Admin() {
             <div className="grid gap-4 sm:grid-cols-2">
               {voices.length === 0 && <Empty />}
               {voices.map((v: VoiceEntry) => (
-                <div key={v.id} className="glass rounded-2xl p-5">
+                <div key={v.id} className="glass rounded-2xl p-5 relative group">
                   <p className="text-xs text-foreground/60">
-                    {v.name} Â· {v.duration}s Â· {new Date(v.ts).toLocaleString()}
+                    {v.name} · {v.duration}s · {new Date(v.ts).toLocaleString()}
                   </p>
                   <audio src={v.dataUrl} controls className="mt-2 w-full" />
+                  <button
+                    onClick={() => {
+                      if (confirm(`Delete voice note from ${v.name}?`)) {
+                        void deleteVoice(v.id);
+                      }
+                    }}
+                    className="absolute top-4 right-4 rounded-full bg-destructive/10 p-2 text-destructive opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity hover:bg-destructive/20 cursor-pointer"
+                    aria-label="Delete voice note"
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
@@ -190,7 +338,7 @@ function Empty() {
   );
 }
 
-function Table({ head, rows }: { head: string[]; rows: string[][] }) {
+function Table({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
   if (!rows.length) return <Empty />;
   return (
     <div className="overflow-x-auto rounded-2xl glass">
