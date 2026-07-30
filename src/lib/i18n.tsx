@@ -30,7 +30,7 @@ export const dict: Dict = {
     en: "Under a sky of soft gold, he asked. She said yes.",
     ar: "تحت سماء ذهبية، سألها فأجابت بنعم.",
   },
-  story3Date: { en: "12 Aug 2025", ar: " ١٢ أغسطس ٢٠٢٦ " },
+  story3Date: { en: "12 Aug 2026", ar: " ١٢ أغسطس ٢٠٢٦ " },
   story3Title: { en: "Wedding", ar: "الزواج" },
   story3Body: {
     en: "Tonight, we celebrate the beginning of forever.",
