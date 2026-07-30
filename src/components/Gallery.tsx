@@ -45,7 +45,7 @@ export function Gallery() {
           </motion.h2>
         </div>
 
-        <div className="mt-16 grid auto-rows-[140px] grid-cols-2 gap-3 sm:auto-rows-[180px] sm:grid-cols-3 sm:gap-4">
+        <div className="mt-16 grid auto-rows-[140px] grid-cols-3 gap-3 sm:auto-rows-[180px] sm:grid-cols-3 sm:gap-4">
           {photos.map((p, i) => (
             <motion.button
               key={i}
@@ -60,7 +60,7 @@ export function Gallery() {
                 src={p.src}
                 alt=""
                 loading="lazy"
-                className="h-full w-full object-contain p-1 transition-transform duration-[1200ms] group-hover:scale-105"
+                className="h-full w-full object-fit object-center transition-transform duration-[1200ms] group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-onyx/20 via-transparent to-transparent opacity-40 transition-opacity group-hover:opacity-20 pointer-events-none" />
               <div className="absolute inset-0 ring-1 ring-inset ring-gold/0 transition-all group-hover:ring-gold/40 pointer-events-none" />
