@@ -47,11 +47,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
       setElapsed(0);
       timerRef.current = window.setInterval(() => setElapsed((e) => e + 1), 1000);
     } catch {
-      setError(
-        lang === "en"
-          ? "Microphone access denied."
-          : "ØªÙ… Ø±ÙØ¶ Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ù„Ù…ÙŠÙƒØ±ÙˆÙÙˆÙ†.",
-      );
+      setError(lang === "en" ? "Microphone access denied." : "تم رفض الوصول للميكروفون.");
     }
   };
 
@@ -67,7 +63,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
     try {
       setError(null);
       await submitVoice({
-        name: name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ"),
+        name: name.trim() || (lang === "en" ? "Guest" : "ضيف"),
         dataUrl: preview,
         duration,
         language: lang,
@@ -83,7 +79,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
       setError(
         lang === "en"
           ? "Unable to send the voice note right now."
-          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ù…Ù‚Ø·Ø¹ Ø§Ù„ØµÙˆØªÙŠ Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+          : "تعذر إرسال المقطع الصوتي حاليًا.",
       );
     }
   };
@@ -100,7 +96,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1 }}
           className="text-[10px] uppercase tracking-[0.5em] text-gold-soft/80"
         >
-          {lang === "en" ? "Voice from the heart" : "ØµÙˆØª Ù…Ù† Ø§Ù„Ù‚Ù„Ø¨"}
+          {lang === "en" ? "Voice from the heart" : "صوت من القلب"}
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -109,7 +105,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
           transition={{ duration: 1, delay: 0.1 }}
           className="mt-4 font-display text-4xl italic text-gradient-gold sm:text-5xl"
         >
-          {lang === "en" ? "Record a wish in your voice" : "Ø³Ø¬Ù‘Ù„ Ø£Ù…Ù†ÙŠØªÙƒ Ø¨ØµÙˆØªÙƒ"}
+          {lang === "en" ? "Record a wish in your voice" : "سجّل أمنيتك بصوتك"}
         </motion.h2>
 
         <div className="mt-10 rounded-3xl glass-gold p-8">
@@ -148,11 +144,11 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
             <p className="mt-1 text-[10px] uppercase tracking-[0.3em] text-foreground/50">
               {recording
                 ? lang === "en"
-                  ? "Recordingâ€¦"
-                  : "Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ³Ø¬ÙŠÙ„â€¦"
+                  ? "Recording..."
+                  : "جاري التسجيل..."
                 : lang === "en"
                   ? "Tap to record"
-                  : "Ø§Ø¶ØºØ· Ù„Ù„ØªØ³Ø¬ÙŠÙ„"}
+                  : "اضغط للتسجيل"}
             </p>
             {error && <p className="mt-3 text-xs text-destructive">{error}</p>}
           </div>
@@ -167,7 +163,7 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
                 disabled={!ready}
                 className="mt-4 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-40"
               >
-                {lang === "en" ? "Send Voice Note" : "Ø£Ø±Ø³Ù„ Ø§Ù„Ù…Ù‚Ø·Ø¹"}
+                {lang === "en" ? "Send Voice Note" : "أرسل المقطع"}
               </button>
             </div>
           )}

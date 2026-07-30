@@ -34,7 +34,7 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
       setSaving(true);
       setError(null);
       await submitRsvp({
-        name: name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ"),
+        name: name.trim() || (lang === "en" ? "Guest" : "ضيف"),
         choice,
         guests: Math.max(1, guests),
         language: lang,
@@ -45,9 +45,7 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
     } catch (err) {
       console.error(err);
       setError(
-        lang === "en"
-          ? "Unable to send RSVP right now."
-          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¶ÙˆØ± Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+        lang === "en" ? "Unable to send RSVP right now." : "تعذر إرسال تأكيد الحضور حاليًا.",
       );
     } finally {
       setSaving(false);
@@ -106,7 +104,7 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
                   />
                   <p className="relative font-display text-xl italic text-ivory">{o.label}</p>
                   <p className="relative mt-1 text-[10px] uppercase tracking-[0.3em] text-foreground/50">
-                    {lang === "en" ? "Tap to select" : "Ø§Ø¶ØºØ· Ù„Ù„Ø§Ø®ØªÙŠØ§Ø±"}
+                    {lang === "en" ? "Tap to select" : "اضغط للاختيار"}
                   </p>
                 </motion.button>
               ))}
@@ -132,11 +130,7 @@ export function RSVP({ onSubmit }: { onSubmit?: () => void }) {
                   disabled={!choice || !ready || saving}
                   className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] disabled:opacity-40"
                 >
-                  {saving
-                    ? lang === "en"
-                      ? "Sending..."
-                      : "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„..."
-                    : t("send")}
+                  {saving ? (lang === "en" ? "Sending..." : "جاري الإرسال...") : t("send")}
                 </button>
               </div>
               {error && <p className="text-sm text-destructive sm:col-span-3">{error}</p>}

@@ -26,7 +26,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
 
   const send = async () => {
     if (!text.trim()) return;
-    const finalName = name.trim() || (lang === "en" ? "Guest" : "Ø¶ÙŠÙ");
+    const finalName = name.trim() || (lang === "en" ? "Guest" : "ضيف");
 
     try {
       setSending(true);
@@ -44,9 +44,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
     } catch (err) {
       console.error(err);
       setError(
-        lang === "en"
-          ? "Unable to send your message right now."
-          : "ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø±Ø³Ø§Ù„ØªÙƒ Ø­Ø§Ù„ÙŠÙ‹Ø§.",
+        lang === "en" ? "Unable to send your message right now." : "تعذر إرسال رسالتك حاليًا.",
       );
     } finally {
       setSending(false);
@@ -107,7 +105,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
 
             <div className="mt-4 flex items-center gap-3">
               <span className="text-[10px] uppercase tracking-[0.3em] text-foreground/60">
-                {lang === "en" ? "Color" : "Ø§Ù„Ù„ÙˆÙ†"}
+                {lang === "en" ? "Color" : "اللون"}
               </span>
               <div className="flex gap-2">
                 {colors.map((c) => (
@@ -126,16 +124,13 @@ export function Messages({ onSent }: { onSent?: () => void }) {
 
             <div className="mt-5 rounded-xl border border-border/30 bg-onyx/30 p-5">
               <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40">
-                {lang === "en" ? "Preview" : "Ù…Ø¹Ø§ÙŠÙ†Ø©"}
+                {lang === "en" ? "Preview" : "معاينة"}
               </p>
               <p className="mt-2 font-display italic" style={{ color, fontSize: "1.1rem" }}>
-                {text ||
-                  (lang === "en"
-                    ? "Your message will glow here..."
-                    : "Ø³ØªØ¸Ù‡Ø± Ø±Ø³Ø§Ù„ØªÙƒ Ù‡Ù†Ø§...")}
+                {text || (lang === "en" ? "Your message will glow here..." : "ستظهر رسالتك هنا...")}
               </p>
               <p className="mt-2 text-xs text-foreground/50">
-                â€” {name || (lang === "en" ? "You" : "Ø£Ù†Øª")}
+                — {name || (lang === "en" ? "You" : "أنت")}
               </p>
             </div>
 
@@ -146,7 +141,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
               disabled={!text.trim() || !ready || sending}
               className="mt-5 w-full rounded-full bg-gradient-to-r from-gold-deep to-gold px-6 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {sending ? (lang === "en" ? "Sending..." : "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...") : t("send")}
+              {sending ? (lang === "en" ? "Sending..." : "جاري الإرسال...") : t("send")}
             </button>
             {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </motion.div>
