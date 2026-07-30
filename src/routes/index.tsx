@@ -21,7 +21,7 @@ import { EVENT } from "@/lib/event";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${EVENT.bride.en} & ${EVENT.groom.en} â€” Wedding Invitation` },
+      { title: `${EVENT.bride.en} & ${EVENT.groom.en} Wedding Invitation` },
       {
         name: "description",
         content: `Join us in celebrating the wedding of ${EVENT.bride.en} & ${EVENT.groom.en}.`,

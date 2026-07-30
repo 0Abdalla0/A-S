@@ -165,7 +165,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
                     "{m.text}"
                   </p>
                   <div className="mt-3 flex items-center justify-between">
-                    <p className="text-xs tracking-wider text-foreground/60">â€” {m.name}</p>
+                    <p className="text-xs tracking-wider text-foreground/60">{m.name}</p>
                     <button
                       className="text-foreground/40 transition-colors hover:text-gold"
                       aria-label="heart"
