@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n";
 import { useInvitationData } from "@/lib/invitation-data";
 import { burstGold } from "@/lib/confetti";
+import { Link } from "@tanstack/react-router";
 
 const colors = ["#b06a7c", "#8e4c5f", "#c9a227", "#8a6fa8", "#5f8b93", "#4b3a3f"];
 
@@ -23,6 +24,18 @@ export function Messages({ onSent }: { onSent?: () => void }) {
     ...msgs.map((m) => ({ name: m.name, text: m.text, color: m.color, ts: m.ts })),
     ...seed,
   ];
+
+  // Spotlight index state
+  const [spotlightIndex, setSpotlightIndex] = useState(0);
+
+  // Periodically rotate through spotlight messages
+  useEffect(() => {
+    if (list.length <= 1) return;
+    const interval = setInterval(() => {
+      setSpotlightIndex((prev) => (prev + 1) % list.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [list.length]);
 
   const send = async () => {
     if (!text.trim()) return;
@@ -81,7 +94,7 @@ export function Messages({ onSent }: { onSent?: () => void }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="glass rounded-2xl p-6 sm:p-8"
+            className="glass rounded-2xl p-6 sm:p-8 h-fit"
           >
             <input
               value={name}
@@ -146,45 +159,87 @@ export function Messages({ onSent }: { onSent?: () => void }) {
             {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </motion.div>
 
-          <div className="space-y-4">
-            <AnimatePresence initial={false}>
-              {list.map((m, i) => (
-                <motion.div
-                  key={m.ts + m.name}
-                  initial={{ opacity: 0, y: -10, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="glass rounded-2xl p-5"
-                  style={{ animation: `float-soft ${6 + i}s ease-in-out infinite` }}
-                >
-                  <p
-                    className="font-display italic leading-relaxed"
-                    style={{ color: m.color, fontSize: "1.15rem" }}
-                  >
-                    "{m.text}"
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="text-xs tracking-wider text-foreground/60">{m.name}</p>
-                    <button
-                      className="text-foreground/40 transition-colors hover:text-gold"
-                      aria-label="heart"
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-full relative min-h-[220px] flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                {list.length > 0 ? (
+                  (() => {
+                    const m = list[spotlightIndex] || list[0];
+                    if (!m) return null;
+                    return (
+                      <motion.div
+                        key={m.ts + m.name}
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.5 }}
+                        className="glass-gold rounded-3xl p-6 sm:p-8 text-center w-full shadow-[var(--shadow-gold)] relative flex flex-col justify-center h-full min-h-[220px]"
                       >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                      </svg>
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                        <span className="absolute top-4 left-4 text-[9px] uppercase tracking-[0.22em] text-gold-soft/80 font-semibold px-2 py-0.5 border border-gold-soft/30 rounded-full">
+                          {lang === "en" ? "Spotlight" : "تهنئة مميزة"}
+                        </span>
+
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="mx-auto text-gold-soft/30 mb-4 mt-2"
+                        >
+                          <path
+                            d="M11.19 12c0 2.2-1.79 4-4 4s-4-1.8-4-4c0-2.2 2-6 6-8l.5 1.5c-2.5 1.5-2.5 3-2.5 3.5.5-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4zm9 0c0 2.2-1.79 4-4 4s-4-1.8-4-4c0-2.2 2-6 6-8l.5 1.5c-2.5 1.5-2.5 3-2.5 3.5.5-.3 1.3-.5 2-.5 2.2 0 4 1.8 4 4z"
+                            fill="currentColor"
+                          />
+                        </svg>
+
+                        <p
+                          className="font-display italic leading-relaxed text-lg sm:text-xl font-light"
+                          style={{ color: m.color }}
+                        >
+                          "{m.text}"
+                        </p>
+                        <p className="mt-4 font-semibold text-sm text-foreground/75">— {m.name}</p>
+                      </motion.div>
+                    );
+                  })()
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="glass rounded-3xl p-6 sm:p-8 text-center w-full flex items-center justify-center min-h-[220px]"
+                  >
+                    <p className="font-display italic text-foreground/50">
+                      {lang === "en"
+                        ? "Leave a wish to light up the page!"
+                        : "اكتب تهنئة لتضيء هذه الصفحة!"}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                to="/wishes"
+                className="rounded-full bg-gradient-to-r from-gold-deep to-gold px-8 py-3 text-xs uppercase tracking-[0.3em] text-onyx shadow-[var(--shadow-gold)] transition-transform hover:scale-[1.02] inline-flex items-center gap-2 cursor-pointer"
+              >
+                <span>{lang === "en" ? "See all wishes" : "مشاهدة كل التهاني"}</span>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  {lang === "ar" ? (
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  ) : (
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  )}
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

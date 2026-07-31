@@ -34,7 +34,8 @@ export function VoiceNote({ onSent }: { onSent?: () => void }) {
       chunks.current = [];
       rec.ondataavailable = (e) => e.data.size && chunks.current.push(e.data);
       rec.onstop = () => {
-        const blob = new Blob(chunks.current, { type: "audio/webm" });
+        const mimeType = rec.mimeType || "audio/mp4";
+        const blob = new Blob(chunks.current, { type: mimeType });
         const reader = new FileReader();
         reader.onloadend = () => setPreview(reader.result as string);
         reader.readAsDataURL(blob);
